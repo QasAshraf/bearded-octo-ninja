@@ -6,11 +6,23 @@ grid = [
         [" ", "#", "#", " ", " ", " "],
         [" ", "#", " ", " ", " ", " "]
        ];
+gridWidth = grid[0].length;
+gridHeight = grid.length;
 
+canvasWidth = 1000; //window.innerWidth;
+canvasHeight = 600; //(window.innerHeight / 100) * 80;
+
+
+players = [];
+velocity = [5,5];
 
 $(document).ready(function() {
 
-  var conn = new WebSocket('ws://109.109.137.94:8080');
+  // setInterval(function() {
+  //   $("h1").css({ color: getRandomColor() });
+  // }, 100);
+
+  conn = new WebSocket('ws://109.109.137.94:8080');
   conn.onopen = function(e) {
     console.log("Connection established!");
   };
@@ -19,7 +31,7 @@ $(document).ready(function() {
     console.log(e.data);
     splitData = e.data.split(" ");
     if (splitData[0] === "move") {
-      movePlayer(splitData[1], splitData[2], splitData[3]);
+      movePlayer(parseInt(splitData[1]), parseInt(splitData[2]), parseInt(splitData[3]));
     } else if (splitData[0] === "add") {
       addPlayer();
     }
@@ -31,12 +43,15 @@ $(document).ready(function() {
 
   stage = new Kinetic.Stage({
     container: "game-container",
-    width: window.innerWidth,
-    height: (window.innerHeight / 100) * 80
+    width: canvasWidth,
+    height: canvasHeight
   });
   layer = new Kinetic.Layer();
-  players = [];
-  velocity = [5,5];
+
+  mazeBlockWidth = canvasWidth / gridWidth + 1;
+  mazeBlockHeight = canvasHeight / gridHeight + 1;
+
+  buildMaze();
 
   // Add the layer to the stage
   stage.add(layer);
@@ -45,34 +60,60 @@ $(document).ready(function() {
   addPlayer();
 
   // Test move
-  setTimeout(function() {
-    movePlayer(players[0], 800, 500);
-  }, 1000);
+  // setTimeout(function() {
+  //   movePlayer(players[0], 800, 500);
+  // }, 1000);
 
   console.log(parseInt($("canvas").height()));
 
 });
 
+function buildMaze() {
+  for (var i = 0; i < grid.length; i++) {
+    for (var j = 0; j < grid[i].length; j++) {
+      if (grid[j][i] === "#") {
+        buildMazeBlock(i,j);
+      }
+    };
+  };
+}
+
+function buildMazeBlock(i,j) {
+  var block = new Kinetic.Rect({
+    x: i * mazeBlockWidth,
+    y: j * mazeBlockHeight,
+    width: mazeBlockWidth,
+    height: mazeBlockHeight,
+    fill: 'rgb(100,100,100)',
+    stroke: 'rgb(100,100,100)',
+    strokeWidth: 0
+  });
+  layer.add(block);
+  layer.draw();
+}
+
 function addPlayer() {
   var newPlayer = new Kinetic.Rect({
-    x: 10,
-    y: 10,
-    width: 50,
-    height: 50,
-    fill: 'green',
-    stroke: 'black',
-    strokeWidth: 0
+    x: 0,
+    y: 0,
+    width: mazeBlockWidth,
+    height: mazeBlockHeight,
+    fill: getRandomColor()
   });
 
   players.push(newPlayer);
 
   // add the shape to the layer
   layer.add(newPlayer);
+
+  layer.draw();
 }
 
-function movePlayer(player, x, y) {
+function movePlayer(playerIndex, x, y) {
 
   var anim = new Kinetic.Animation(function(frame) {
+      var player = players[playerIndex];
+
       var distanceToX = player.getPosition().x - x;
       var distanceToY = player.getPosition().y - y;
       // console.log(distanceToX,distanceToY);
@@ -93,7 +134,13 @@ function movePlayer(player, x, y) {
       }
   }, layer);
   anim.start();
+}
 
-  player.move(velocity[0], velocity[1]);
-
+function getRandomColor() {
+    var letters = '0123456789ABCDEF'.split('');
+    var color = '#';
+    for (var i = 0; i < 6; i++ ) {
+        color += letters[Math.round(Math.random() * 15)];
+    }
+    return color;
 }
