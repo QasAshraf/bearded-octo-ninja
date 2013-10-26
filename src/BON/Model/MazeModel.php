@@ -24,13 +24,13 @@ class MazeModel extends GameModel
 		// Take a random side wall [x]
 		$side = rand(1,4);
 		if($side == 1)
-			$this->start = array(rand(0, $x_size-1), 0);
+			$this->start = array(rand(1, $x_size-1), 1);
 		else if($side == 2)
-			$this->start = array($x_size-1, rand(0, $y_size-1));
+			$this->start = array($x_size-1, rand(1, $y_size-1));
 		else if($side == 3)
-			$this->start = array(rand(0, $x_size-1), $y_size-1);
+			$this->start = array(rand(1, $x_size-1), $y_size-1);
 		else if($side == 4)
-			$this->start = array(0, rand(0, $y_size-1));
+			$this->start = array(1, rand(1, $y_size-1));
 
 		// Mark this random side wall as the starting point, and set as passage [x]
 		$current = $this->start;
