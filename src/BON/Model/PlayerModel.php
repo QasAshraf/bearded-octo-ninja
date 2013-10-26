@@ -1,6 +1,6 @@
 <?php
 
-namespace BON\Model;
+namespace Bob\Model;
 
 class Player
 {

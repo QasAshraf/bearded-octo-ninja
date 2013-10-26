@@ -1,6 +1,6 @@
 <?php
 
-namespace BON\Model;
+namespace Bob\Model;
 
 abstract class GameModel
 {
@@ -117,9 +117,6 @@ class MazeModel extends GameModel
 			unset($wall_list[$current_wall]);
 		}
 
-		// TO-DO
-		// Generate End Point
-
 		$this->grid = $grid;
 		return $grid;
 
@@ -138,5 +135,15 @@ class MazeModel extends GameModel
 	public function get_grid()
 	{
 		return $this->grid;
+	}
+
+	public function print_grid()
+	{
+		for($i = 0; $i < sizeof($this->grid)); $i++)
+		{
+			for($j = 0; $j < sizeof($this->grid[$i]; $j++))
+				echo $this->grid[$i][$j];
+			echo '\n';
+		}
 	}
 }
