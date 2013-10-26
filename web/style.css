@@ -6,6 +6,7 @@ html, body, header, main, footer, div {
 body {
   font-family: Helvetica, Arial;
   color: rgb(80,80,80);
+  font-size: 20px;
 }
 
 header {
@@ -14,8 +15,10 @@ header {
 }
 
 header h1 {
-  padding: 1em 0;
+  padding: 0.5em 0;
   margin: 0;
+  text-transform: uppercase;
+  font-size: 2.5em;
 }
 
 main {
@@ -31,14 +34,19 @@ main {
 
 footer {
   width: 100%;
-  height: 10%;
 }
 
 .page-width {
   width: 1000px;
   margin: 0 auto;
+  padding-left: 1em;
+  padding-right: 1em;
 }
 
 span.bold {
   font-weight: bold;
+}
+
+ol li {
+  margin-bottom: 0.5em;
 }
