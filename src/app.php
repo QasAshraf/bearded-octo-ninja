@@ -2,10 +2,16 @@
 require_once __DIR__.'/bootstrap.php';
 
 $app->get('/', function() use($app) {
+	$grid = new BON\Model\MazeModel(31, 31);
     return $app['twig']->render('hello.twig', array(
-        'name' => 'BON',
+        'grid' => json_encode($grid->get_grid()),
     ));
-            });
+});
+
+$app->get('/maze', function() use($app) {
+	$grid = new BON\Model\MazeModel(31, 31);
+    return json_encode($grid->get_grid());
+});
 
 $app->mount(
 '/new',
@@ -16,6 +22,5 @@ $app->mount(
 '/incoming',
 new BON\Route\SMSIncomingController()
 );
-
 
 $app->run(); 
