@@ -12,7 +12,7 @@ class MazeModel extends GameModel
 
 	public function __construct($game_name, $x_size, $y_size)
 	{
-		$parent::construct($game_name);
+		parent::__construct($game_name);
 
 		// Initilize some vars [x]
 		$wall_list = array();
@@ -161,7 +161,7 @@ class MazeModel extends GameModel
 				$direction = 4;
 				break;
 			default:
-				return array():
+				return array();
 		}
 
 		$current_postition = get_pos($player);
@@ -169,7 +169,7 @@ class MazeModel extends GameModel
 
 		$moved = 0;
 		if($direction %2 == 1)
-			for($i = $current_position[1]; $i <= $times; $i += -($direction-2)
+			for($i = $current_position[1]; $i <= $times; $i += -($direction-2))
 			{
 				if($this->grid[$current_position[0]][$i] == "#")
 					break;
@@ -181,7 +181,7 @@ class MazeModel extends GameModel
 					$new_pos = array($current_position[0], $i);
 			}
 		else
-			for($i = $current_position[0]; $i <= $times; $i += -($direction-3)
+			for($i = $current_position[0]; $i <= $times; $i += -($direction-3))
 			{
 				if($this->grid[$i][$current_position[1]] == "#")
 					break;
