@@ -1,5 +1,14 @@
 $(document).ready(function() {
 
+  // var conn = new WebSocket('ws://localhost:8080');
+  // conn.onopen = function(e) {
+  //     console.log("Connection established!");
+  // };
+
+  // conn.onmessage = function(e) {
+  //     console.log(e.data);
+  // };
+
   var stage = new Kinetic.Stage({
     container: "game-container",
     width: window.innerWidth,
@@ -23,11 +32,6 @@ $(document).ready(function() {
 
   // add the layer to the stage
   stage.add(layer);
-
-  // setInterval(function() {
-  //   rect.move(1, 0);
-  //   stage.draw();
-  // }, 100);
 
   var vector = [5,5];
 
