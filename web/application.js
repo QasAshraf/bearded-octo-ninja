@@ -83,8 +83,8 @@ function buildMazeBlock(i,j) {
   } else if (grid[j][i] === "#") {
     blockFill = "rgb(100,100,100)";
   } else if (grid[j][i] === "s") {
-    startX = j;
-    startY = i;
+    startX = i;
+    startY = j;
     return;
   }
 
@@ -99,7 +99,6 @@ function buildMazeBlock(i,j) {
   if (grid[j][i] === "e") {
     console.log(j,i);
     setInterval(function() {
-      console.log("Aaaaah");
       block.setFill(getRandomColor());
       layer.draw();
     },100);
