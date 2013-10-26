@@ -1,6 +1,6 @@
 <?php
 
-namespace Bob\Model;
+namespace BON\Model;
 
 abstract class GameModel
 {
