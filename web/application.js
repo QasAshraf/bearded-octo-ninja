@@ -3,17 +3,26 @@ gridWidth = grid[0].length;
 gridHeight = grid.length;
 
 canvasWidth = 1000; //window.innerWidth;
-canvasHeight = 600; //(window.innerHeight / 100) * 80;
-
+canvasHeight = 650; //(window.innerHeight / 100) * 80;
 
 players = [];
 velocity = [2,2];
 
+startX = 0;
+startY = 0;
+
 $(document).ready(function() {
 
-  // setInterval(function() {
-  //   $("h1").css({ color: getRandomColor() });
-  // }, 100);
+  var interval; 
+  $("header").mouseover(function() {
+    interval = setInterval(function() {
+      $("h1").css({ color: getRandomColor() });
+    }, 100);
+  });
+  $("header").mouseout(function() {
+    clearInterval(interval);
+    $("h1").css({ color: "rgb(80,80,80)" });
+  });
 
   conn = new WebSocket('ws://109.109.137.94:8080');
   conn.onopen = function(e) {
@@ -62,29 +71,48 @@ $(document).ready(function() {
 function buildMaze() {
   for (var i = 0; i < grid.length; i++) {
     for (var j = 0; j < grid[i].length; j++) {
-      if (grid[j][i] === "#") {
-        buildMazeBlock(i,j);
-      }
+      buildMazeBlock(i,j);
     };
   };
 }
 
 function buildMazeBlock(i,j) {
+  var blockFill = ""
+  if (grid[j][i] === " ") {
+     return;
+  } else if (grid[j][i] === "#") {
+    blockFill = "rgb(100,100,100)";
+  } else if (grid[j][i] === "s") {
+    startX = j;
+    startY = i;
+    return;
+  }
+
   var block = new Kinetic.Rect({
     x: i * mazeBlockWidth,
     y: j * mazeBlockHeight,
     width: mazeBlockWidth,
     height: mazeBlockHeight,
-    fill: 'rgb(100,100,100)'
+    fill: blockFill
   });
+
+  if (grid[j][i] === "e") {
+    console.log(j,i);
+    setInterval(function() {
+      console.log("Aaaaah");
+      block.setFill(getRandomColor());
+      layer.draw();
+    },100);
+  }
+
   layer.add(block);
   layer.draw();
 }
 
 function addPlayer() {
   var newPlayer = new Kinetic.Rect({
-    x: 0,
-    y: 0,
+    x: startX * mazeBlockWidth,
+    y: startY * mazeBlockHeight,
     width: mazeBlockWidth,
     height: mazeBlockHeight,
     fill: getRandomColor()
