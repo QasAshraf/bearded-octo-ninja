@@ -25,7 +25,7 @@ main {
 }
 
 #game-container {
-  padding: 1em 0;  
+  /*padding: 1em 0;  */
   text-align: center;
   border-top: 4px solid rgb(200,200,200);
   border-bottom: 4px solid rgb(200,200,200);
