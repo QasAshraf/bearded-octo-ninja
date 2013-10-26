@@ -29,6 +29,7 @@ class Chat implements MessageComponentInterface {
         {
             $name = $msg[1];
             $this->games[$name] = new MazeModel($name, 20, 20);
+            $this->games[$name]["client"] = $from;
             $from->send(json_encode(array("id" => $name, $this->games[$id])));
         }
 
@@ -74,7 +75,8 @@ class Chat implements MessageComponentInterface {
                 break;
             case "move":
                 $args = explode(" ", $message[1]);
-                $games[$players[$entryData['from']]->get_current_game()]->move($players[$entryData['from']], $args[0], $args[1]);
+                $return = $games[$players[$entryData['from']]->get_current_game()]->move($players[$entryData['from']], $args[0], $args[1]);
+                $games[$players[$entryData['from']]->get_current_game()]["client"]->send($return);
                 break;
             case "leave":
                 break;

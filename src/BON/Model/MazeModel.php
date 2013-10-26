@@ -173,6 +173,10 @@ class MazeModel extends GameModel
 			{
 				if($this->grid[$current_position[0]][$i] == "#")
 					break;
+				else if($this->grid[$current_position[0]][$i] == "e")
+				{
+					return array("Win" => $player->get_user_name());
+				}
 				else
 					$new_pos = array($current_position[0], $i);
 			}
@@ -181,6 +185,10 @@ class MazeModel extends GameModel
 			{
 				if($this->grid[$i][$current_position[1]] == "#")
 					break;
+				else if($this->grid[$i][$current_position[1]] == "e")
+				{
+					return array("Win" => $player->get_user_name());
+				}
 				else
 					$new_pos = array($i, $current_position[1]);
 			}
@@ -189,7 +197,6 @@ class MazeModel extends GameModel
 					 "x" => $new_pos[0],
 					 "y" => $new_pos[1]
 					);
-
 	}
 
 	public function say($player, $message)
