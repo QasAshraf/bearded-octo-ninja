@@ -28,9 +28,9 @@ class Chat implements MessageComponentInterface {
         if($msg[0] == "NEW_GAME")
         {
             $name = $msg[1];
-            $this->games[$name] = new MazeModel($name, 20, 20);
+            $this->games[$name]["game"] = new MazeModel($name, 20, 20);
             $this->games[$name]["client"] = $from;
-            $from->send(json_encode(array("id" => $name, $this->games[$id])));
+            $from->send(json_encode(array("name" => $name, $this->games[$name]["game"]->get_grid())));
         }
 
 
@@ -76,7 +76,7 @@ class Chat implements MessageComponentInterface {
             case "move":
                 $args = explode(" ", $message[1]);
                 $return = $games[$players[$entryData['from']]->get_current_game()]->move($players[$entryData['from']], $args[0], $args[1]);
-                $games[$players[$entryData['from']]->get_current_game()]["client"]->send($return);
+                $games[$players[$entryData['from']]->get_current_game()]["client"]->send(json_encode($return));
                 break;
             case "leave":
                 break;
