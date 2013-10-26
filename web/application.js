@@ -18,6 +18,10 @@ velocity = [5,5];
 
 $(document).ready(function() {
 
+  // setInterval(function() {
+  //   $("h1").css({ color: getRandomColor() });
+  // }, 100);
+
   conn = new WebSocket('ws://109.109.137.94:8080');
   conn.onopen = function(e) {
     console.log("Connection established!");
