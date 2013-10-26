@@ -1,5 +1,6 @@
 bearded-octo-ninja
 ==================
+by Team Qas
 
 Hack Manchester
 
