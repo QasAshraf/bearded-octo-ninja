@@ -109,9 +109,12 @@ class MazeModel extends GameModel
 			}
 
 			if(sizeof($wall_list) == 1)
-				$this->end_point = $curr;
+				$this->end = $curr;
 
 		}
+
+		$grid[$this->start[0]][$this->start[1]] = "s";
+		$grid[$this->end[0]][$this->end[1]] = "e";
 
 		$this->grid = $grid;
 		return $grid;
