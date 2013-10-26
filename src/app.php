@@ -10,5 +10,10 @@ $app->mount(
 new Bob\Route\NewPageControllerProvider()
 );
 
+$app->mount(
+'/incoming',
+new Bob\Route\SMSIncomingController()
+);
+
 
 $app->run(); 
