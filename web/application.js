@@ -9,15 +9,37 @@ $(document).ready(function() {
   //     console.log(e.data);
   // };
 
-  var stage = new Kinetic.Stage({
+  stage = new Kinetic.Stage({
     container: "game-container",
     width: window.innerWidth,
     height: (window.innerWidth / 100) * 40
   });
 
-  var layer = new Kinetic.Layer();
+  layer = new Kinetic.Layer();
 
-  var rect = new Kinetic.Rect({
+  players = [];
+
+  // add the layer to the stage
+  stage.add(layer);
+
+  addPlayer();
+  setTimeout(addPlayer, 1000);
+
+  var vector = [5,5];
+
+  console.log(parseInt($("canvas").height()));
+  
+  var anim = new Kinetic.Animation(function(frame) {
+    for (var i = 0; i < players.length; i++) {
+      movePlayer(players[i], vector);
+    }
+  }, layer);
+  anim.start();
+
+});
+
+function addPlayer() {
+  var newPlayer = new Kinetic.Rect({
     x: 239,
     y: 75,
     width: 100,
@@ -27,22 +49,11 @@ $(document).ready(function() {
     strokeWidth: 4
   });
 
+  players.push(newPlayer);
+
   // add the shape to the layer
-  layer.add(rect);
-
-  // add the layer to the stage
-  stage.add(layer);
-
-  var vector = [5,5];
-
-  console.log(parseInt($("canvas").height()));
-  
-  var anim = new Kinetic.Animation(function(frame) {
-    movePlayer(rect, vector);
-  }, layer);
-  anim.start();
-
-});
+  layer.add(newPlayer);
+}
 
 function movePlayer(player, velocity) {
 
