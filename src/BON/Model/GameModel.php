@@ -21,10 +21,15 @@ abstract class GameModel
 		return false;
 	}
 
+	public function get_player($phone_number)
+	{
+		return $this->players[$phone_number];
+	}
+
 	public function join($new_player)
 	{
 		if(!$this->has_player())
-			$this->players[] = $new_player;
+			$this->players[$new_player->get_phone_number()] = $new_player;
 	}
 
 }

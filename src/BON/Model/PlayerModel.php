@@ -15,13 +15,14 @@ class Player
 		$this->user_name = $user_name;
 	}
 
+	public function get_current_game()
+	{
+		return $this->current_game;
+	}
+
 	public function join($game_name)
 	{
-		if(isset($game_name))
-		{
-			$this->current_game = $game_name;
-			return $game_name->join($this);
-		}
+		$this->current_game = $game_name;	
 	}
 
 	public function move($direction, $times = 1)

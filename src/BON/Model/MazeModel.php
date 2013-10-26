@@ -10,8 +10,10 @@ class MazeModel extends GameModel
 
 	protected $player_positions;
 
-	public function __construct($x_size, $y_size)
+	public function __construct($game_name, $x_size, $y_size)
 	{
+		$parent::construct($game_name);
+
 		// Initilize some vars [x]
 		$wall_list = array();
 		$grid;
@@ -117,8 +119,6 @@ class MazeModel extends GameModel
 		$grid[$this->end[0]][$this->end[1]] = "e";
 
 		$this->grid = $grid;
-		return $grid;
-
 	}
 
 	protected function get_pos($player)
@@ -134,13 +134,62 @@ class MazeModel extends GameModel
 
 	public function move($player, $direction, $times)
 	{
-		$current_postition = get_pos($player);
+		switch($direction)
+		{
+			case "up":
+			case "u":
+			case "north":
+			case "n":
+				$direction = 1;
+				break;
+			case "right":
+			case "r":
+			case "east":
+			case "e":
+				$direction = 2;
+				break;
+			case "down":
+			case "d":
+			case "south":
+			case "s":
+				$direction = 3;
+				break;
+			case "left":
+			case "l":
+			case "west":
+			case "w":
+				$direction = 4;
+				break;
+			default:
+				return array():
+		}
 
+		$current_postition = get_pos($player);
+		$new_pos = $current_position;
+
+		$moved = 0;
 		if($direction %2 == 1)
-			for($i = $current_position[1]; $i < $times; $i += 1* $direction - 2)
+			for($i = $current_position[1]; $i <= $times; $i += -($direction-2)
 			{
-				
+				if($this->grid[$current_position[0]][$i] == "#")
+					break;
+				else
+					$new_pos = array($current_position[0], $i);
 			}
+		else
+			for($i = $current_position[0]; $i <= $times; $i += -($direction-3)
+			{
+				if($this->grid[$i][$current_position[1]] == "#")
+					break;
+				else
+					$new_pos = array($i, $current_position[1]);
+			}
+
+		return array("player" => $player->get_phone_number(),
+					 "x" => $new_pos[0],
+					 "y" => $new_pos[1]
+					);
+
 	}
 
 	public function say($player, $message)
