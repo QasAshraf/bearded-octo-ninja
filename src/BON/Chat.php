@@ -44,4 +44,11 @@ class Chat implements MessageComponentInterface {
 
         $conn->close();
     }
+
+    public function onTextReceived($entry) {
+        $entryData = json_decode($entry, true);
+
+        echo sprintf('Text received from "%s" with message "%s" ' . "\n"
+            , $entryData['from'], $entryData['content']);
+    }
 }

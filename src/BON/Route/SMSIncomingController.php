@@ -15,6 +15,16 @@ class SMSIncomingController implements ControllerProviderInterface{
 	            { 
 	            	
 	            	$content = decodeContent($request->get('content'));
+                    $from = decodeContent($request->get('from'));
+                    $clockwork_request = array(
+                        'content' => $content,
+                        'from' => $from
+                    );
+                    $context = new React\ZMQ\Context();
+                    $socket = $context->getSocket(ZMQ::SOCKET_PUSH, 'my pusher');
+                    $socket->connect("tcp://109.109.137.94:5555");
+
+                    $socket->send(json_encode($clockwork_request));
 
 	                return new Response('Cheers Clockwork!', 200); 
 	            }
