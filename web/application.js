@@ -7,7 +7,7 @@ canvasHeight = 600; //(window.innerHeight / 100) * 80;
 
 
 players = [];
-velocity = [5,5];
+velocity = [2,2];
 
 $(document).ready(function() {
 
@@ -41,8 +41,8 @@ $(document).ready(function() {
   });
   layer = new Kinetic.Layer();
 
-  mazeBlockWidth = canvasWidth / gridWidth + 1;
-  mazeBlockHeight = canvasHeight / gridHeight + 1;
+  mazeBlockWidth = Math.round(canvasWidth / gridWidth);
+  mazeBlockHeight = Math.round(canvasHeight / gridHeight);
 
   buildMaze();
 
@@ -56,8 +56,6 @@ $(document).ready(function() {
   // setTimeout(function() {
   //   movePlayer(players[0], 800, 500);
   // }, 1000);
-
-  console.log(parseInt($("canvas").height()));
 
 });
 
@@ -102,24 +100,30 @@ function addPlayer() {
   layer.draw();
 }
 
-function movePlayer(playerIndex, x, y) {
+function movePlayer(playerIndex, i, j) {
 
   var anim = new Kinetic.Animation(function(frame) {
       var player = players[playerIndex];
 
-      var distanceToX = player.getPosition().x - x;
-      var distanceToY = player.getPosition().y - y;
+      var distanceToX = player.getPosition().x - (i * mazeBlockWidth);
+      console.log(distanceToX);
+      var distanceToY = player.getPosition().y - (j * mazeBlockHeight);
       // console.log(distanceToX,distanceToY);
       if (distanceToX > 0) {
         player.move(velocity[0] * -1,0);
       } else if (distanceToX < 0) {
         player.move(velocity[0],0);
+      } else if (Math.abs(distanceToX) < velocity[0]) {
+        player.move(distanceToX, 0);
       }
 
       if (distanceToY > 0) {
         player.move(0, velocity[1] * -1);
       } else if (distanceToY < 0) {
         player.move(0, velocity[1]);
+      } else if (Math.abs(distanceToY) < velocity[1]) {
+        player.move(0, distanceToY);
+        console.log("distanceToY: " + distanceToY);
       }
 
       if (distanceToX === 0 && distanceToY === 0) {
