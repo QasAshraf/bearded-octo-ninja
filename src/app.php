@@ -1,18 +1,20 @@
 <?php
 require_once __DIR__.'/bootstrap.php';
 
-$app->get('/', function() use($app) { 
-                    return 'Hello '; 
+$app->get('/', function() use($app) {
+    return $app['twig']->render('hello.twig', array(
+        'name' => 'BON',
+    ));
             });
 
 $app->mount(
 '/new',
-new Bob\Route\NewPageControllerProvider()
+new BON\Route\NewPageControllerProvider()
 );
 
 $app->mount(
 '/incoming',
-new Bob\Route\SMSIncomingController()
+new BON\Route\SMSIncomingController()
 );
 
 
