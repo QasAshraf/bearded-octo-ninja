@@ -4,7 +4,8 @@
         "filp/whoops": "1.*",
         "twig/twig": ">=1.8,<2.0-dev",
         "symfony/twig-bridge": "~2.3",
-        "cboden/Ratchet": "0.3.*"
+        "cboden/Ratchet": "0.3.*",
+        "react/zmq": "0.2.*"
     },
     "autoload": {
         "psr-0": {"BON": "src/"}
