@@ -1,8 +1,9 @@
-canvasWidth = 1100; //window.innerWidth;
-canvasHeight = 650; //(window.innerHeight / 100) * 80;
+canvasWidth = (window.innerWidth / 100) * 70;
+canvasHeight = (window.innerHeight / 100) * 80;
 
 players = [];
 playerPositions = [];
+playerNames = [];
 velocity = [2,2];
 
 startX = 0;
@@ -18,7 +19,7 @@ $(document).ready(function() {
   layer = new Kinetic.Layer();
 
   // Super shiny header
-  easterEggs();
+  herps();
 
   conn = new WebSocket('ws://109.109.137.94:8080');
   
@@ -34,9 +35,10 @@ $(document).ready(function() {
 
   conn.onmessage = function(e) {
     var json = JSON.parse(e.data);
-    if (json.operation === "PLAYER" && "type" === "move") {
+    if (json.operation === "PLAYER" && json.type === "move") {
       movePlayer(0, parseInt(json.x), parseInt(json.y));
-    } else if (json.operation === "PLAYER" && "type" === "new") {
+    } else if (json.operation === "PLAYER" && json.type === "new") {
+      playerNames.push(json.name);
       addPlayer();
     } else if (json.operation === "GAME" && json.type === "new") {
       grid = json.grid;
@@ -51,15 +53,11 @@ $(document).ready(function() {
       // Add the layer to the stage
       stage.add(layer);
 
-      // Add test players
-      addPlayer();
-      addPlayer();
-      addPlayer();
-      // addPlayer();
-      // addPlayer();
-      stackPlayers(startX,startY);
-    } else if (json.operation === "GAME" && json.type === "end") {
-
+    } else if (json.operation === "GAME" && json.type === "win") {
+      setInterval(function() {
+        $("#win-box h2").css({ color: getRandomColor() });
+      }, 100);
+      $("#win-box").css({ display: "fixed" });
     }
   };
 
@@ -118,7 +116,7 @@ $(document).ready(function() {
 
     // add the shape to the layer
     layer.add(newPlayer);
-
+    stackPlayers(startX,startY);
     layer.draw();
   }
 
@@ -128,10 +126,7 @@ $(document).ready(function() {
       if (playerPositions[k][0] === i && playerPositions[k][1] === j) {
         stackedPlayers.push(players[k]);
       }
-      console.log(playerPositions[k][0],playerPositions[k][1]);
     }
-
-    console.log(stackedPlayers.length);
 
     var stackRows = Math.ceil(stackedPlayers.length / 2);
     for (var k = 0; k < stackedPlayers.length; k++) {
@@ -198,7 +193,8 @@ $(document).ready(function() {
       return color;
   }
 
-  function easterEggs() {
+  function herps() {
+
     var interval; 
     $("header").mouseover(function() {
       interval = setInterval(function() {

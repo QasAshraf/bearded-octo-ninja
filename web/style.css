@@ -15,25 +15,40 @@ header {
 }
 
 header h1 {
-  padding: 0.5em 0;
+  padding: 0.5em 1em;
   margin: 0;
   text-transform: uppercase;
   font-size: 2.5em;
 }
 
 main {
+  /*width: 1200px;*/
+  text-align: center;
+  padding: 0 2.5em;
 }
 
 #game-container {
   text-align: center;
   border-top: 4px solid rgb(200,200,200);
-  border-bottom: 4px solid rgb(200,200,200);
+  /*border-bottom: 4px solid rgb(200,200,200);*/
   background: rgb(220,220,220);
+  display: inline-block;
+  float: left;
+}
+
+#help {
+  display: inline-block;
+  float: left;
+  padding: 0 0.5em;
+  text-align: left;
+  width: 20%;
+  font-size: 14px;
 }
 
 .kineticjs-content {
   border-left: 4px solid rgb(200,200,200);
   border-right: 4px solid rgb(200,200,200);
+  display: inline-block;
 }
 
 footer {
@@ -64,4 +79,26 @@ span.bold {
 
 ol li {
   margin-bottom: 0.3em;
+}
+
+.clearfix:after {
+   content: " "; /* Older browser do not support empty content */
+   visibility: hidden;
+   display: block;
+   height: 0;
+   clear: both;
+}
+
+#win-box {
+  background: purple;
+  display: none;
+  top: 20%;
+  bottom: 20%;
+  left: 20%;
+  right: 20%;
+}
+
+#win-box h2 {
+  font-size: 4.5em;
+  margin: 20% 5%;
 }
