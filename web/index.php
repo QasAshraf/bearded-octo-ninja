@@ -20,7 +20,7 @@
     <div class="page-width">
         <h2>How do I play?</h2>
         <ol>
-            <li>First send <span class="bold">join &lt;username&gt;</span> in a text to <span class="bold">+447860 033155</span>. You will appear in the maze.</li>
+            <li>First send <span class="bold">join &lt;username&gt;</span> in a text to <span class="bold">+447860 033167</span>. You will appear in the maze.</li>
             <li>Text the commands below to the above number to move about:</li>
             <ul>
                 <li><span class="bold">up &lt;number of tiles up&gt;</span></li>

@@ -26,45 +26,47 @@ $(document).ready(function() {
   });
 
   conn = new WebSocket('ws://109.109.137.94:8080');
+  
   conn.onopen = function(e) {
     console.log("Connection established!");
-  };
-
-  conn.onmessage = function(e) {
-    console.log(e.data);
-    splitData = e.data.split(" ");
-    if (splitData[0] === "move") {
-      movePlayer(parseInt(splitData[1]), parseInt(splitData[2]), parseInt(splitData[3]));
-    } else if (splitData[0] === "add") {
-      addPlayer();
-    }
+    conn.send( {"operation":"GAME","type":"new","recipient":"server","message":"newgame","sender":"steph","id":388542958} );
   };
 
   conn.onclose = function(e) {
     console.log("Connection closed!");
   };
 
-  stage = new Kinetic.Stage({
-    container: "game-container",
-    width: canvasWidth,
-    height: canvasHeight
-  });
-  layer = new Kinetic.Layer();
+  conn.onmessage = function(e) {
+    console.log(e.data);
+    if (false/*splitData[0] === "move"*/) {
+      movePlayer(parseInt(splitData[1]), parseInt(splitData[2]), parseInt(splitData[3]));
+    } else if (false /*splitData[0] === "add"*/) {
+      addPlayer();
+    } else if (e.data.operation === "GAME" && e.data.type === "new") {
+      grid = e.data.grid;
+      stage = new Kinetic.Stage({
+        container: "game-container",
+        width: canvasWidth,
+        height: canvasHeight
+      });
+      layer = new Kinetic.Layer();
 
-  mazeBlockWidth = Math.round(canvasWidth / gridWidth);
-  mazeBlockHeight = Math.round(canvasHeight / gridHeight);
+      mazeBlockWidth = Math.round(canvasWidth / gridWidth);
+      mazeBlockHeight = Math.round(canvasHeight / gridHeight);
 
-  buildMaze();
+      buildMaze();
 
-  // Add the layer to the stage
-  stage.add(layer);
+      // Add the layer to the stage
+      stage.add(layer);
 
-  // Add test players
-  addPlayer();
-
-  // setTimeout(function() {
-  //   whatIsWallWhatisNot();
-  // }, 1000);
+      // Add test players
+      addPlayer();
+      addPlayer();
+      addPlayer();
+      addPlayer();
+      addPlayer();
+    }
+  };
 
 });
 
@@ -119,6 +121,8 @@ function addPlayer() {
 
   players.push(newPlayer);
 
+  stackPlayers(startX,startY);
+
   // add the shape to the layer
   layer.add(newPlayer);
 
@@ -133,10 +137,45 @@ function movePlayer(playerIndex, i, j) {
     duration: 1,
     x: i * mazeBlockWidth,
     y: j * mazeBlockHeight,
-    opacity: 1
+    opacity: 1,
+    onFinish: function() {
+      stackedPlayers(i,j);
+    }
   });
 
   tween.play();
+}
+
+function stackPlayers(i,j) {
+  var stackedPlayers = [];
+  var positionX = i * mazeBlockWidth;
+  var positionY = j * mazeBlockHeight;
+  for (var i = 0; i < players.length; i++) {
+    if (players[i].getPosition().x === positionX
+    &&  players[i].getPosition().y === positionY) {
+      stackedPlayers.push(players[i])
+    }
+  }
+
+  var stackRows = Math.ceil(players.length / 2);
+  for (var i = 0; i < players.length; i++) {
+    var row = Math.floor(i / 2);
+    var column = i % 2;
+    // Adjust x and y
+    players[i].setPosition(
+      players[i].getPosition().x + column * Math.round(mazeBlockWidth / 2),
+      players[i].getPosition().y + row * Math.round(mazeBlockHeight / 2)
+    );
+
+    // Adjust width and height
+    if (players[i].length % 2 == 0 || row != (stackRows - 1)) {
+      players[i].setWidth(Math.round(mazeBlockWidth / 2));
+    }
+    player.setHeight(Math.round(mazeBlockHeight / stackRows));
+  }
+
+  layer.draw();
+
 }
 
 function whatIsWallWhatisNot() {
