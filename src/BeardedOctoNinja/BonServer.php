@@ -30,6 +30,15 @@ class BonServer implements MessageComponentInterface {
         $response = null;
         switch($request['operation']) {
             case 'SMS':
+                if ($request['type']=='incoming') {
+                    $response = array(
+                        'operation' => 'PLAYER',
+                        'type' => 'chat',
+                        'recipient' => 'ALL',
+                        'message' => $request['message']
+                    );
+
+                }
                 break;
             case 'GAME':
                 echo 'GAME';
