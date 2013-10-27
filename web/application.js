@@ -119,6 +119,8 @@ function addPlayer() {
 
   players.push(newPlayer);
 
+  stackPlayers(startX,startY);
+
   // add the shape to the layer
   layer.add(newPlayer);
 
@@ -133,10 +135,37 @@ function movePlayer(playerIndex, i, j) {
     duration: 1,
     x: i * mazeBlockWidth,
     y: j * mazeBlockHeight,
-    opacity: 1
+    opacity: 1,
+    onFinish: function() {
+      stackedPlayers(i,j);
+    }
   });
 
   tween.play();
+}
+
+function stackPlayers(i,j) {
+  var stackedPlayers = [];
+  var positionX = i * mazeBlockWidth;
+  var positionY = j * mazeBlockHeight;
+  for (var i = 0; i < players.length; i++) {
+    if (players[i].getPosition().x === positionX
+    &&  players[i].getPosition().y === positionY) {
+      stackedPlayers.push(players[i])
+    }
+  }
+
+  var stackRows = Math.ceil(stackedPlayers.length / 2);
+  for (var i = 0; i < stackedPlayers.length; i++) {
+    var row = Math.floor(i / 2);
+    var column = i % 2;
+    // Adjust x and y
+
+
+    // Adjust width and height
+
+  }
+
 }
 
 function whatIsWallWhatisNot() {
