@@ -35,8 +35,10 @@ class SMSInterceptor {
         $clockwork_request = array(
             'operation' => 'SMS',
             'type' => 'incoming',
+            'recipient' => $data['to'],
             'message' => $data['content'], // TODO: Cleanup the input, at the moment we're just chuking it through
-            'sender' => $data['from']
+            'sender' => $data['from'],
+            'id' => $data['msg_id']
         );
 
         $msg = WebSocketMessage::create(json_encode($clockwork_request));
