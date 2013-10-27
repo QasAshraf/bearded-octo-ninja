@@ -128,6 +128,9 @@ class Maze extends Game
 
 	public function join(Player $player)
 	{
+		if(isset($this->players[$player->get_phone_number()]))
+			return ();
+
 		parent::join($player);
 		$this->players[$player->get_phone_number()]->set_position($this->start);
 		return array("operation" => "PLAYER",
