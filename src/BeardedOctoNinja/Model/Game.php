@@ -14,10 +14,8 @@ abstract class Game
 
 	protected function has_player(Player $player)
 	{
-		foreach($this->players as $current_player)
-			if($current_player->equals($player))
-				return true;
-
+		if(isset($this->players[$player->get_phone_number()]))
+			return true;
 		return false;
 	}
 
@@ -26,10 +24,12 @@ abstract class Game
 		return $this->players[$phone_number];
 	}
 
-	public function join(Player $new_player)
+	public function join(Player $player)
 	{
-		if(!$this->has_player($new_player))
-			$this->players[$new_player->get_phone_number()] = $new_player;
+		if(!$this->has_player($player))
+			$this->players[$player->get_phone_number()] = $player;
+		
+		$this->players[$player->get_phone_number()]->join(this);
 	}
 
 }

@@ -8,7 +8,7 @@ class Maze extends Game
 	protected $start;
 	protected $end;
 
-	protected $player_positions;
+	protected $players;
 
 	public function __construct($game_name, $x_size, $y_size)
 	{
@@ -50,6 +50,8 @@ class Maze extends Game
 
 		if($current[1]-1 >= 0)
 			$wall_list[] = array($current[0], $current[1]-1);
+
+		$end;
 
 		while(sizeof($wall_list) > 0)
 		{
@@ -108,28 +110,26 @@ class Maze extends Game
 						$wall_list[] = $space;
 				}
 
-			}
-
-			if(sizeof($wall_list) == 1)
 				$this->end = $curr;
+
+			}
 
 		}
 
 		$grid[$this->start[0]][$this->start[1]] = "s";
 		$grid[$this->end[0]][$this->end[1]] = "e";
-
 		$this->grid = $grid;
 	}
 
 	protected function get_pos(Player $player)
 	{
-		return $this->player_positions[$player->get_phone_number()];
+		return $this->player[$player->get_phone_number()]->get_position();
 	}
 
 	public function join(Player $player)
 	{
 		parent::join($player);
-		$this->player_positions[$this->player->get_phone_number()] = $this->start;
+		$this->player[$player->get_phone_number()]->set_position($this->start);
 	}
 
 	public function move(Player $player, $direction, $times)
@@ -211,12 +211,12 @@ class Maze extends Game
 
 	public function get_start()
 	{
-		return $this->start; // TODO: Implement
+		return $this->start;
 	}
 
 	public function get_end()
 	{
-		return $this->end; // TODO: Implement
+		return $this->end;
 	}
 
 	public function get_grid()

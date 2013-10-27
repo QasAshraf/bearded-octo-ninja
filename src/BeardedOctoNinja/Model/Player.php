@@ -8,6 +8,7 @@ class Player
 	protected $user_name;
 
 	protected $current_game;
+	protected $position;
 
 	public function __construct($phone_number, $user_name)
 	{
@@ -15,14 +16,24 @@ class Player
 		$this->user_name = $user_name;
 	}
 
+	public function get_position()
+	{
+		return $this->position;
+	}
+
+	public function set_position($position)
+	{
+		$this->position = $position;
+	}
+
 	public function get_current_game()
 	{
 		return $this->current_game;
 	}
 
-	public function join($game_name)
+	public function join(Game $game)
 	{
-		$this->current_game = $game_name;	
+		$this->current_game = $game;	
 	}
 
 	public function move($direction, $times = 1)
