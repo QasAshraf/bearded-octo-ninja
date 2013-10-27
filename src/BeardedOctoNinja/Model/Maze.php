@@ -51,7 +51,7 @@ class Maze extends Game
 		if($current[1]-1 >= 0)
 			$wall_list[] = array($current[0], $current[1]-1);
 
-		$end;
+		$end = null;
 
 		while(sizeof($wall_list) > 0)
 		{
@@ -176,7 +176,6 @@ class Maze extends Game
 		$current_position = $this->get_pos($player);
 		$new_pos = $current_position;
 
-		$moved = 0;
 		if($direction %2 == 1)
 			for($i = $current_position[1]; $i <= $times; $i += -($direction-2))
 			{
@@ -209,7 +208,7 @@ class Maze extends Game
 			}
 
 		return array("operation" => "PLAYER",
-				     "type", => "move",
+				     "type" => "move",
 					 "player" => $player->get_phone_number(),
 					 "x" => $new_pos[0],
 					 "y" => $new_pos[1]
@@ -223,7 +222,9 @@ class Maze extends Game
 
 	public function leave($phone_number)
 	{
+        $player = $this->players[$phone_number];
         unset($this->players[$phone_number]);
+
         return array("operation" => "PLAYER",
 					 "type" => "leave",
 					 "name" => $player->get_user_name()
@@ -242,7 +243,7 @@ class Maze extends Game
 
 	public function get_grid()
 	{
-		return $this->grid; // TODO: Implement
+		return $this->grid;
 	}
 
 	public function print_grid()

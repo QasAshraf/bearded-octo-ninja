@@ -5,7 +5,7 @@ new SMSInterceptor();
 
 class SMSInterceptor {
 
-    protected $socketServer = '109.109.137.94:8080';
+    protected $socketServer = 'localhost:8080';
 
     public function __construct()
     {

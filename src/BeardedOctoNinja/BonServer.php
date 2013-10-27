@@ -97,8 +97,7 @@ class BonServer implements MessageComponentInterface
         $response = null;
         switch (strtolower($request['operation'])) {
             case 'sms':
-                $this->sms = $this->getSMSController();
-                $response = $this->sms->handleRequest($request);
+                $response = $this->handleSMS($request);
                 break;
             case 'player':
                 $this->player = $this->getPlayerController();
