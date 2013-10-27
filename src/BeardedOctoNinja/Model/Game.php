@@ -29,7 +29,7 @@ abstract class Game
 		if(!$this->has_player($player))
 			$this->players[$player->get_phone_number()] = $player;
 		
-		$this->players[$player->get_phone_number()]->join(this);
+		$this->players[$player->get_phone_number()]->join($this);
 	}
 
 }

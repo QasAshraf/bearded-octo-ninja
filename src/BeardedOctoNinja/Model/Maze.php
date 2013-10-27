@@ -123,7 +123,7 @@ class Maze extends Game
 
 	protected function get_pos(Player $player)
 	{
-		return $this->player[$player->get_phone_number()]->get_position();
+		return $this->players[$player->get_phone_number()]->get_position();
 	}
 
 	public function join(Player $player)
