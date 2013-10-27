@@ -65,7 +65,7 @@ class BonServer implements MessageComponentInterface
                 ); // TODO: Maybe change this format, depending on what's easier for SMS Interceptor
                 break;
             case 'incoming':
-
+                $request['message'] = strtolower($request['message']);
                 $command = explode(" ", $request['message'], 2);
                 switch($command[0])
                 {
