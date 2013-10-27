@@ -73,7 +73,7 @@ $(document).ready(function() {
       // Add the layer to the stage
       stage.add(layer);
 
-    } else if (json.operation === "GAME" && json.type === "win") {
+    } else if (json.operation === "PLAYER" && json.type === "win") {
       $("#win-box").append("<h2>" + playerNames[playerIndex] + " are win!!!</h2>");
       setInterval(function() {
         $("#win-box h2").css({ color: getRandomColor() });
