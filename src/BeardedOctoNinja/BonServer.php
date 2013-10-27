@@ -22,9 +22,8 @@ class BonServer implements MessageComponentInterface {
 
     public function onMessage(ConnectionInterface $from, $msg) {
         $numRecv = count($this->clients) - 1;
-
+	
         echo $msg;
-
 
         // TODO: Parse message, if type = SMS then we can do something useful.
         $request = json_decode($msg, 1);
@@ -39,10 +38,10 @@ class BonServer implements MessageComponentInterface {
         }
 
         if($response !== null){
-            echo sprintf('Connection %d sending message "%s" to %d other connection%s' . "\n"
+            echo sprintf("\n" . 'Connection %d sending message "%s" to %d other connection%s' . "\n"
                 , $from->resourceId, json_encode($response), $numRecv, $numRecv == 1 ? '' : 's');
             foreach ($this->clients as $client) {
-                if ($from !== $client) {
+                if ($from === $client) {
                     // The sender is not the receiver, send to each client connected
                     $client->send(json_encode($response));
                 }
