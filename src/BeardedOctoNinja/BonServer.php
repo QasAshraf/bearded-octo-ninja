@@ -34,7 +34,7 @@ class BonServer implements MessageComponentInterface {
                 $data = $this->game->processMessage($request);
                 $response = array(
                     'operation' => 'GAME',
-                    'type' => 'NEW',
+                    'type' => 'GRID',
                     'recipient' => 'ALL',
                     'message' => $data,
                     'sender' => 'server',

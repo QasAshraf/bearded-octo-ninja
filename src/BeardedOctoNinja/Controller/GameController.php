@@ -1,5 +1,6 @@
 <?php
 namespace BeardedOctoNinja\Controller;
+use BeardedOctoNinja\Model\Maze;
 /**
  * Created by PhpStorm.
  * User: steph
@@ -8,10 +9,10 @@ namespace BeardedOctoNinja\Controller;
  */
 
 class GameController {
-    private $grid = null;
+    private $maze = null;
     public function startGame() {
-        $this->grid = new BeardedOctoNinja\Model\Maze("The Crystal Maze", 21, 21);
-        return $this->grid->get_grid();
+        $this->maze = new Maze("The Crystal Maze", 21, 21);
+        return $this->maze->get_grid();
     }
 
     public function processMessage($msg) {
@@ -20,14 +21,14 @@ class GameController {
                 return $this->processNEWMessage($msg);
                 break;
         }
+        return 'noendpoint';
     }
 
     public function processNEWMessage($msg) {
-        $request = explode($msg->message, ' ');
-        $command = reset($request);
-        switch ($command) {
+        switch ($msg->message) {
             case 'newgame':
                 return $this->startGame();
         }
+        return 'noendpoint';
     }
 }
