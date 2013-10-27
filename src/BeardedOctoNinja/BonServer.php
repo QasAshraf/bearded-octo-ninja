@@ -65,19 +65,19 @@ class BonServer implements MessageComponentInterface
                 ); // TODO: Maybe change this format, depending on what's easier for SMS Interceptor
                 break;
             case 'incoming':
-
+                $request['message'] = strtolower($request['message']);
                 $command = explode(" ", $request['message'], 2);
                 switch($command[0])
                 {
                     case "join":
-                        return $this->getGameController()->new_player($request['from'], $command[1]);
+                        return $this->getGameController()->new_player($request['sender'], $command[1]);
                         break;
                     case "move":
                         $args = explode(" ", $command[1], 2);
-                        return $this->getGameController()->move_player($request['from'], $args[0], $args[1]);
+                        return $this->getGameController()->move_player($request['sender'], $args[0], $args[1]);
                         break;
                     case "leave":
-                        return $this->getGameController()->leave_player($request['from']);
+                        return $this->getGameController()->leave_player($request['sender']);
                         break;
                     default:
                         return NULL;

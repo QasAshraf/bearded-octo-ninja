@@ -53,38 +53,28 @@ class GameController {
 
     public function new_player($phone_number, $name)
     {
-        try
+        if(isset($this->maze))
         {
             $player = new Player($phone_number, $name);
             return $this->maze->join($player);
         }
-        catch(Exception $e)
-        {
+        else
             return array();
-        }
     }
 
     public function move_player($phone_number, $direction, $times)
     {
-        try
-        {
+        if(isset($this->maze))
             return $this->maze->move($phone_number, $direction, $times);
-        }
-        catch(Exception $e)
-        {
+        else
             return array();
-        }
     }
 
     public function leave_player($phone_number)
     {
-        try
-        {
+        if(isset($this->maze))
             return $this->maze->leave($phone_number);
-        }
-        catch(Exception $e)
-        {
+        else
             return array();
-        }
     }
 }
