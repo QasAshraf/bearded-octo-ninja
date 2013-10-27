@@ -4,69 +4,102 @@ namespace BeardedOctoNinja;
 use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
 use BeardedOctoNinja\Controller\GameController;
+use BeardedOctoNinja\Controller\SMSController;
+use BeardedOctoNinja\Controller\PlayerController;
 
-class BonServer implements MessageComponentInterface {
+class BonServer implements MessageComponentInterface
+{
     protected $clients;
 
-    public function __construct() {
+    protected $sms, $game, $player; // Controllers
+
+    public function __construct()
+    {
         $this->clients = new \SplObjectStorage;
-        $this->game = new GameController();
     }
 
-    public function onOpen(ConnectionInterface $conn) {
+    public function onOpen(ConnectionInterface $conn)
+    {
         // Store the new connection to send messages to later
         $this->clients->attach($conn);
 
         echo "New connection! ({$conn->resourceId})\n";
     }
 
-    public function onMessage(ConnectionInterface $from, $msg) {
-        $numRecv = count($this->clients) - 1;
-	
-        echo $msg;
+    private function getSMSController() // No need to create lots of objects
+    {
+        if(is_null($this->sms))
+        {
+            return new SMSController();
+        }
+        return $this->sms;
+    }
 
-        // TODO: Parse message, if type = SMS then we can do something useful.
-        $request = json_decode($msg, 1);
+    private function getPlayerController()
+    {
+        if(is_null($this->player))
+        {
+            return new PlayerController();
+        }
+        return $this->player;
+    }
+
+    private function getGameController()
+    {
+        if(is_null($this->game))
+        {
+            return new GameController();
+        }
+        return $this->game;
+    }
+
+    public function onMessage(ConnectionInterface $from, $msg)
+    {
+        $request = json_decode($msg, 1); // Force into array
         $response = null;
-        switch($request['operation']) {
-            case 'SMS':
-                if ($request['type']=='incoming') {
-                    $response = array(
-                        'operation' => 'PLAYER',
-                        'type' => 'chat',
-                        'recipient' => 'ALL',
-                        'message' => $request['message']
-                    );
-
-                }
+        switch (strtolower($request['operation'])) {
+            case 'sms':
+                $this->sms = $this->getSMSController();
+                $response = $this->sms->handleRequest($request);
                 break;
-            case 'GAME':
-                echo 'GAME';
+            case 'player':
+                $this->player = $this->getPlayerController();
+                $response = $this->player->handleRequest($request);
+                break;
+            case 'game':
+                $this->game = $this->getGameController();
                 $response = $this->game->processMessage($request);
+                break;
+            default:
+                $response = NULL;
                 break;
         }
 
-        if($response !== null){
-            echo sprintf("\n" . 'Connection %d sending message "%s" to %d other connection%s' . "\n"
-                , $from->resourceId, json_encode($response), $numRecv, $numRecv == 1 ? '' : 's');
-            foreach ($this->clients as $client) {
-                if ($from === $client) {
-                    // The sender is not the receiver, send to each client connected
+        if (is_null($response)) {
+            $response = array('code' => 400,
+                'status' => 'Bad request. Either the request format is invalid or the server doesn\'t
+                                           know how to deal with it, yet');
 
-                    $client->send(json_encode($response));
-                }
-            }
+        }
+
+        echo sprintf("\n" . 'Sending message "%s" to all other connection %s' . "\n"
+            , $from->resourceId, json_encode($response));
+
+        foreach ($this->clients as $client) {
+            $client->send(json_encode($response)); // Could be optimised to send only to select clients at some point
         }
     }
 
-    public function onClose(ConnectionInterface $conn) {
+    public function onClose(ConnectionInterface $conn)
+    {
         // The connection is closed, remove it, as we can no longer send it messages
         $this->clients->detach($conn);
 
         echo "Connection {$conn->resourceId} has disconnected\n";
     }
 
-    public function onError(ConnectionInterface $conn, \Exception $e) {
+    public function onError(ConnectionInterface $conn, \Exception $e)
+    {
         echo "An error has occurred: {$e->getMessage()}\n";
 
         $conn->close();
