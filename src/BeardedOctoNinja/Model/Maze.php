@@ -157,7 +157,7 @@ class Maze extends Game
 			case "up":
 				for($i = $current_position[1]; $i >= ($current_position[1] - $times); $i--)
 				{
-					if($this->grid[$new_pos[0]][$i] == "#")
+					if($i < 0 || $this->grid[$new_pos[0]][$i] == "#")
 					{
 						break;
 					}
@@ -177,7 +177,7 @@ class Maze extends Game
 			case "right":
 				for($i = $current_position[0]; $i <= $current_position[0] + $times; $i++)
 				{
-					if($this->grid[$i][$new_pos[1]] == "#")
+					if($i >= $this->x_size || $this->grid[$i][$new_pos[1]] == "#")
 					{
 						break;
 					}
@@ -197,7 +197,7 @@ class Maze extends Game
 			case "down":
 				for($i = $current_position[1]; $i <= $current_position[1] + $times; $i++)
 				{
-					if($this->grid[$new_pos[0]][$i] == "#")
+					if($i >= $this->y_size || $this->grid[$new_pos[0]][$i] == "#")
 					{
 						break;
 					}
@@ -217,7 +217,7 @@ class Maze extends Game
 			case "left":
 				for($i = $current_position[0]; $i >= $current_position[0] - $times; $i--)
 				{
-					if($this->grid[$i][$new_pos[1]] == "#")
+					if($i < 0 || $this->grid[$i][$new_pos[1]] == "#")
 					{
 						break;
 					}
