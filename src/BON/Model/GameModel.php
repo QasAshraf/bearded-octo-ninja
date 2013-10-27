@@ -15,7 +15,7 @@ abstract class GameModel
 	protected function has_player($player)
 	{
 		foreach($this->players as $current_player)
-			if($current_player->equals($new_player));
+			if($current_player->equals($player))
 				return true;
 
 		return false;
@@ -28,7 +28,7 @@ abstract class GameModel
 
 	public function join($new_player)
 	{
-		if(!$this->has_player())
+		if(!$this->has_player($new_player))
 			$this->players[$new_player->get_phone_number()] = $new_player;
 	}
 

@@ -7,7 +7,7 @@ class Player
 	protected $phone_number;
 	protected $user_name;
 
-	protected $current_game
+	protected $current_game;
 
 	public function __construct($phone_number, $user_name)
 	{
@@ -43,14 +43,14 @@ class Player
 	public function equals($player)
 	{
 		if(get_class($player) == get_class($this))
-			if($player->get_phone_numer() == $this->get_phone_numer())
+			if($player->get_phone_number() == $this->get_phone_number())
 				return true;
 
 		return false;
 
 	}
 
-	public function get_phone_numer()
+	public function get_phone_number()
 	{
 		return $this->phone_number;
 	}
