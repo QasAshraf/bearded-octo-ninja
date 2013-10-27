@@ -31,15 +31,7 @@ class BonServer implements MessageComponentInterface {
             case 'SMS':
                 break;
             case 'GAME':
-                $data = $this->game->processMessage($request);
-                $response = array(
-                    'operation' => 'GAME',
-                    'type' => 'GRID',
-                    'recipient' => 'ALL',
-                    'message' => $data,
-                    'sender' => 'server',
-                    'id' => uniqid()
-                );
+                $response = $this->game->processMessage($request);
                 break;
         }
 

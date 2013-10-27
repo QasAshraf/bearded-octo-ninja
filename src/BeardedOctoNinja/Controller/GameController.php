@@ -10,24 +10,28 @@ use BeardedOctoNinja\Model\Maze;
 
 class GameController {
     private $maze = null;
+    private $size = 21;
+    private $name = null;
     public function startGame() {
-        $this->maze = new Maze("The Crystal Maze", 21, 21);
-        return $this->maze->get_grid();
+        $this->maze = new Maze($this->name, $this->size, $this->size);
     }
 
     public function processMessage($msg) {
         switch ($msg->type) {
-            case 'NEW':
-                return $this->processNEWMessage($msg);
+            case 'create':
+                $this->name = $msg->message;
+                $this->size = $msg->size;
+                $this->startGame();
+                $response = array(
+                    'operation' => 'GAME',
+                    'type' => 'new',
+                    'recipient' => 'ALL',
+                    'grid' => $this->maze->get_grid(),
+                    'size' => $this->size,
+                    'name' => $this->name
+                );
+                return $response;
                 break;
-        }
-        return 'noendpoint';
-    }
-
-    public function processNEWMessage($msg) {
-        switch ($msg->message) {
-            case 'newgame':
-                return $this->startGame();
         }
         return 'noendpoint';
     }
