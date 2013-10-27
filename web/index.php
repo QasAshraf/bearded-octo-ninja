@@ -10,26 +10,30 @@
 <body>
 
 <header>
-    <h1 class="page-width">Super Mega SMS Maze Racer</h1>
+    <h1>Super Mega SMS Maze Racer</h1>
 </header>
 
-<main>
+<main class="clearfix">
 
     <div id="game-container"></div>
 
-    <div class="page-width">
+    <div id="help">
         <h2>How do I play?</h2>
         <ol>
-            <li>First send <span class="bold">join &lt;username&gt;</span> in a text to <span class="bold">+447860 033167</span>. You will appear in the maze.</li>
-            <li>Text the commands below to the above number to move about:</li>
+            <li>Text <span class="bold">join &lt;username&gt;</span> to <span class="bold">+447860 033167</span></li>
+            <li>Then text the commands to get to flashing box:</li>
             <ul>
-                <li><span class="bold">up &lt;number of tiles up&gt;</span></li>
-                <li><span class="bold">down &lt;number of tiles down&gt;</span></li>
-                <li><span class="bold">left &lt;number of tiles left&gt;</span></li>
-                <li><span class="bold">right &lt;number of tiles right&gt;</span></li>
+                <li><span class="bold">up &lt;amount&gt;</span></li>
+                <li><span class="bold">down &lt;amount&gt;</span></li>
+                <li><span class="bold">left &lt;amount&gt;</span></li>
+                <li><span class="bold">right &lt;amount&gt;</span></li>
             </ul>
-            <li>First one to the end wins!</li>
+            <li>First one to it WINS!</li>
         </ol>
+    </div>
+
+    <div id="win-box">
+        <h2>YOU ARE WIN!!!</h2>
     </div>
 
 </main>
