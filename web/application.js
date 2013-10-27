@@ -52,7 +52,7 @@ $(document).ready(function() {
       } else {
         console.log("Couldn't find player " + json.player);
       }
-      $("#console").append("<p>" + colouredName(playerIndex) + " moved</p>");
+      $("#console").append("<p>" + colouredName(playerIndex) + " moved to (" + json.x + "," + json.y + ")</p>");
       // $("#console").scrollTo('100%');
     } else if (json.operation === "PLAYER" && json.type === "join") {
       playerNames.push(json.name);
