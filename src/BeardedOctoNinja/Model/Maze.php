@@ -189,6 +189,7 @@ class Maze extends Game
 						$new_pos = array($i, $new_pos[1]);
 					}
 				}
+				break;
 			case "down":
 				for($i = $current_position[1]; $i <= $times; $i++)
 				{
@@ -208,6 +209,7 @@ class Maze extends Game
 						$new_pos = array($new_pos[0], $i);
 					}
 				}
+				break;
 			case "left":
 				for($i = $current_position[0]; $i >= $times; $i--)
 				{
@@ -227,6 +229,7 @@ class Maze extends Game
 						$new_pos = array($i, $new_pos[1]);
 					}
 				}
+				break;
 			default:
 				return array();
 		}
