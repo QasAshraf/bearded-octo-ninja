@@ -25,9 +25,9 @@ class BonServer implements MessageComponentInterface {
 
 
         // TODO: Parse message, if type = SMS then we can do something useful.
-        $request = json_decode($msg);
+        $request = json_decode($msg, 1);
         $response = null;
-        switch($request->operation) {
+        switch($request['operation']) {
             case 'SMS':
                 break;
             case 'GAME':

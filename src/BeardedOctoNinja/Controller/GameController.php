@@ -17,10 +17,10 @@ class GameController {
     }
 
     public function processMessage($msg) {
-        switch ($msg->type) {
+        switch ($msg['type']) {
             case 'create':
-                $this->name = $msg->message;
-                $this->size = $msg->size;
+                $this->name = $msg['message'];
+                $this->size = $msg['size'];
                 $this->startGame();
                 $response = array(
                     'operation' => 'GAME',
