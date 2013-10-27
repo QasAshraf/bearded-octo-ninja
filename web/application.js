@@ -4,6 +4,8 @@ canvasHeight = (window.innerHeight / 100) * 80;
 players = [];
 playerPositions = [];
 playerNames = [];
+playerNumbers = [];
+playerColours = [];
 velocity = [2,2];
 
 startX = 0;
@@ -36,21 +38,28 @@ $(document).ready(function() {
   conn.onmessage = function(e) {
     var json = JSON.parse(e.data);
     console.log(json);
+
+    var playerIndex = -1;
+    for (var k = 0; k < playerNumbers.length; k++) {
+      if (playerNumbers[k] === json.player) {
+        playerIndex = k;
+      }
+    }
     if (json.operation === "PLAYER" && json.type === "move") {
-      var playerIndex = -1;
-      for (var k = 0; k < playerNames.length; k++) {
-        if (playerNames[k] === json.name) {
-          playerIndex = k;
-        }
-      }
+      
       if (playerIndex > -1) {
-        movePlayer(0, parseInt(json.x), parseInt(json.y));
+        movePlayer(playerIndex, parseInt(json.x), parseInt(json.y));
       } else {
-        console.log("Couldn't find player " + json.name);
+        console.log("Couldn't find player " + json.player);
       }
+      $("#console").append("<p>" + colouredName(playerIndex) + " moved</p>");
+      // $("#console").scrollTo('100%');
     } else if (json.operation === "PLAYER" && json.type === "join") {
       playerNames.push(json.name);
+      playerNumbers.push(json.player);
       addPlayer();
+      $("#console").append("<p>" + colouredName(playerNumbers.length - 1) + " joined</p>");
+      // $("#console").scrollTo('100%');
     } else if (json.operation === "GAME" && json.type === "new") {
       grid = json.grid;
       gridWidth = grid[0].length;
@@ -65,6 +74,7 @@ $(document).ready(function() {
       stage.add(layer);
 
     } else if (json.operation === "GAME" && json.type === "win") {
+      $("#win-box").append("<h2>" + playerNames[playerIndex] + " are win!!!</h2>");
       setInterval(function() {
         $("#win-box h2").css({ color: getRandomColor() });
       }, 100);
@@ -87,11 +97,11 @@ $(document).ready(function() {
 
   function buildMazeBlock(i,j) {
     var blockFill = ""
-    if (grid[j][i] === " ") {
+    if (grid[i][j] === " ") {
        return;
-    } else if (grid[j][i] === "#") {
+    } else if (grid[i][j] === "#") {
       blockFill = "rgb(100,100,100)";
-    } else if (grid[j][i] === "s") {
+    } else if (grid[i][j] === "s") {
       startX = i;
       startY = j;
       return;
@@ -117,12 +127,15 @@ $(document).ready(function() {
   }
 
   function addPlayer() {
+    var colour = getRandomColor();
+    playerColours.push(colour);
+
     var newPlayer = new Kinetic.Rect({
       x: startX * mazeBlockWidth,
       y: startY * mazeBlockHeight,
       width: mazeBlockWidth,
       height: mazeBlockHeight,
-      fill: getRandomColor()
+      fill: colour
     });
 
     players.push(newPlayer);
@@ -167,24 +180,24 @@ $(document).ready(function() {
 
   }
 
-  function movePlayer(playerIndex, i, j) {
-    players[playerIndex].setWidth(mazeBlockWidth);
-    players[playerIndex].setHeight(mazeBlockHeight);
+  function movePlayer(pIndex, i, j) {
+    players[pIndex].setWidth(mazeBlockWidth);
+    players[pIndex].setHeight(mazeBlockHeight);
 
-    var oldX = playerPositions[playerIndex][0];
-    var oldY = playerPositions[playerIndex][1];
+    var oldX = playerPositions[pIndex][0];
+    var oldY = playerPositions[pIndex][1];
 
-    playerPositions[playerIndex] = [i,j];
+    playerPositions[pIndex] = [i,j];
     stackPlayers(oldX,oldY);
 
     var tween = new Kinetic.Tween({
-      node: players[playerIndex], 
+      node: players[pIndex], 
       duration: 1,
       x: i * mazeBlockWidth,
       y: j * mazeBlockHeight,
       opacity: 1,
       onFinish: function() {
-        stackPlayers(playerPositions[playerIndex][0],playerPositions[playerIndex][1]);
+        stackPlayers(playerPositions[pIndex][0],playerPositions[pIndex][1]);
       }
     });
 
@@ -219,4 +232,8 @@ $(document).ready(function() {
       clearInterval(interval);
       $("h1").css({ color: "rgb(80,80,80)" });
     });
+  }
+
+  function colouredName(plIndex) {
+    return "<span style='color: " + playerColours[plIndex] + "'>" + playerNames[plIndex] + "</span>";
   }

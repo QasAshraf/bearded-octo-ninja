@@ -36,13 +36,18 @@ main {
   float: left;
 }
 
-#help {
+#help, #console {
   display: inline-block;
   float: left;
   padding: 0 0.5em;
   text-align: left;
   width: 20%;
   font-size: 14px;
+}
+
+#console {
+  overflow: scroll;
+  height: 40%;
 }
 
 .kineticjs-content {
@@ -101,4 +106,5 @@ ol li {
 #win-box h2 {
   font-size: 4.5em;
   margin: 20% 5%;
+  text-transform: uppercase;
 }

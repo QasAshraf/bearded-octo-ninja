@@ -23,17 +23,20 @@
             <li>Text <span class="bold">join &lt;username&gt;</span> to <span class="bold">+447860 033167</span></li>
             <li>Then text the commands to get to flashing box:</li>
             <ul>
-                <li><span class="bold">up &lt;amount&gt;</span></li>
-                <li><span class="bold">down &lt;amount&gt;</span></li>
-                <li><span class="bold">left &lt;amount&gt;</span></li>
-                <li><span class="bold">right &lt;amount&gt;</span></li>
+                <li><span class="bold">move up &lt;amount&gt;</span></li>
+                <li><span class="bold">move down &lt;amount&gt;</span></li>
+                <li><span class="bold">move left &lt;amount&gt;</span></li>
+                <li><span class="bold">move right &lt;amount&gt;</span></li>
             </ul>
             <li>First one to it WINS!</li>
         </ol>
     </div>
 
+    <div id="console">
+        <h2>Console</h2>
+    </div>
+
     <div id="win-box">
-        <h2>YOU ARE WIN!!!</h2>
     </div>
 
 </main>
