@@ -13,6 +13,7 @@ startY = 0;
 
 $(document).ready(function() {
 
+  // Super shiny header
   var interval; 
   $("header").mouseover(function() {
     interval = setInterval(function() {
@@ -61,9 +62,8 @@ $(document).ready(function() {
   // Add test players
   addPlayer();
 
-  // Test move
   // setTimeout(function() {
-  //   movePlayer(players[0], 800, 500);
+  //   whatIsWallWhatisNot();
   // }, 1000);
 
 });
@@ -137,6 +137,13 @@ function movePlayer(playerIndex, i, j) {
   });
 
   tween.play();
+}
+
+function whatIsWallWhatisNot() {
+  $(".kineticjs-content").css({ background: "rgb(100,100,100)" });
+  setTimeout(function() {
+    $(".kineticjs-content").css({ background: "rgb(220,220,220)" });
+  },2000);
 }
 
 function getRandomColor() {

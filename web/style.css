@@ -37,7 +37,18 @@ main {
 }
 
 footer {
+  border-top: 4px solid rgb(200,200,200);
   width: 100%;
+  background: rgb(220,220,220);
+  padding: 0.5em 0;
+  text-align: center;
+}
+
+footer a {
+  text-decoration: none;
+  color: rgb(150,150,150);
+  margin: 0 0.5em;
+  font-size: 0.8em;
 }
 
 .page-width {
@@ -52,5 +63,5 @@ span.bold {
 }
 
 ol li {
-  margin-bottom: 0.5em;
+  margin-bottom: 0.3em;
 }
