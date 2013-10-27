@@ -244,7 +244,7 @@ class Maze extends Game
 				return array();
 		}
 
-		$this->players[$player->get_phone_number]->set_position($new_pos);
+		$this->players[$player->get_phone_number()]->set_position($new_pos);
 
 		return array("operation" => "PLAYER",
 				     "type" => "move",
