@@ -129,7 +129,7 @@ class Maze extends Game
 	public function join(Player $player)
 	{
 		if(isset($this->players[$player->get_phone_number()]))
-			return ();
+			return array();
 
 		parent::join($player);
 		$this->players[$player->get_phone_number()]->set_position($this->start);
@@ -149,27 +149,15 @@ class Maze extends Game
 		switch($direction)
 		{
 			case "up":
-			case "u":
-			case "north":
-			case "n":
 				$direction = 1;
 				break;
 			case "right":
-			case "r":
-			case "east":
-			case "e":
 				$direction = 2;
 				break;
 			case "down":
-			case "d":
-			case "south":
-			case "s":
 				$direction = 3;
 				break;
 			case "left":
-			case "l":
-			case "west":
-			case "w":
 				$direction = 4;
 				break;
 			default:
@@ -180,10 +168,13 @@ class Maze extends Game
 		$new_pos = $current_position;
 
 		if($direction %2 == 1)
-			for($i = $current_position[1]; $i <= $times; $i += -($direction-2))
+		{
+			for($i = $current_position[1]; $i <= $times; $i += $direction-2)
 			{
-				if($this->grid[$current_position[0]][$i] == "#")
+				if($this->grid[$new_pos[0]][$i] == "#")
+				{
 					break;
+				}
 				else if($this->grid[$current_position[0]][$i] == "e")
 				{
 					return array("operation" => "PLAYER",
@@ -192,13 +183,19 @@ class Maze extends Game
 								);
 				}
 				else
+				{
 					$new_pos = array($current_position[0], $i);
+				}
 			}
+		}
 		else
-			for($i = $current_position[0]; $i <= $times; $i += -($direction-3))
+		{
+			for($i = $current_position[0]; $i <= $times; $i += $direction-3)
 			{
 				if($this->grid[$i][$current_position[1]] == "#")
+				{
 					break;
+				}
 				else if($this->grid[$i][$current_position[1]] == "e")
 				{
 					return array("operation" => "PLAYER",
@@ -207,8 +204,11 @@ class Maze extends Game
 								);
 				}
 				else
+				{
 					$new_pos = array($i, $current_position[1]);
+				}
 			}
+		}
 
 		return array("operation" => "PLAYER",
 				     "type" => "move",
