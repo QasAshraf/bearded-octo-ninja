@@ -175,7 +175,7 @@ class Maze extends Game
 				{
 					break;
 				}
-				else if($this->grid[$current_position[0]][$i] == "e")
+				else if($this->grid[$new_pos[0]][$i] == "e")
 				{
 					return array("operation" => "PLAYER",
 								 "type" => "win",
@@ -184,7 +184,7 @@ class Maze extends Game
 				}
 				else
 				{
-					$new_pos = array($current_position[0], $i);
+					$new_pos = array($new_pos[0], $i);
 				}
 			}
 		}
@@ -192,11 +192,11 @@ class Maze extends Game
 		{
 			for($i = $current_position[0]; $i <= $times; $i += $direction-3)
 			{
-				if($this->grid[$i][$current_position[1]] == "#")
+				if($this->grid[$i][$new_pos[1]] == "#")
 				{
 					break;
 				}
-				else if($this->grid[$i][$current_position[1]] == "e")
+				else if($this->grid[$i][$new_pos[1]] == "e")
 				{
 					return array("operation" => "PLAYER",
 								 "type" => "win",
@@ -205,7 +205,7 @@ class Maze extends Game
 				}
 				else
 				{
-					$new_pos = array($i, $current_position[1]);
+					$new_pos = array($i, $new_pos[1]);
 				}
 			}
 		}
