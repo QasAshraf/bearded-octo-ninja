@@ -205,8 +205,8 @@ $(document).ready(function() {
     playerPositions[pIndex] = [i,j];
     stackPlayers(oldX,oldY);
 
-    var posX = i * mazeBlockWidth;
-    var posY = j * mazeBlockHeight
+    var posX = i;
+    var posY = j;
 
     var tween = new Kinetic.Tween({
       node: players[pIndex], 
