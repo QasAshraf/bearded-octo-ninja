@@ -5,7 +5,7 @@ new SMSInterceptor();
 
 class SMSInterceptor {
 
-    protected $socketServer = 'localhost:8080';
+    protected $socketServer = '109.109.137.94:8080';
 
     public function __construct()
     {
@@ -58,7 +58,7 @@ class SMSInterceptor {
             'operation' => 'SMS',
             'type' => 'incoming',
             'recipient' => $data['to'],
-            'message' => $data['content'], // TODO: Cleanup the input, at the moment we're just chuking it through
+            'message' => strtolower($data['content']), // TODO: Cleanup the input, at the moment we're just chuking it through
             'sender' => $data['from'],
             'id' => $data['msg_id']
         );
