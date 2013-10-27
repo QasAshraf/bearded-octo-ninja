@@ -26,10 +26,10 @@ $(document).ready(function() {
   });
 
   conn = new WebSocket('ws://109.109.137.94:8080');
-  grid = conn.send( {"operation":"GAME","type":"NEW","recipient":"server","message":"newgame","sender":"steph","id":388542958} );
   
   conn.onopen = function(e) {
     console.log("Connection established!");
+    conn.send( {"operation":"GAME","type":"NEW","recipient":"server","message":"newgame","sender":"steph","id":388542958} );
   };
 
   conn.onclose = function(e) {
@@ -38,12 +38,12 @@ $(document).ready(function() {
 
   conn.onmessage = function(e) {
     console.log(e.data);
-    splitData = e.data.split(" ");
-    if (splitData[0] === "move") {
+    if (false/*splitData[0] === "move"*/) {
       movePlayer(parseInt(splitData[1]), parseInt(splitData[2]), parseInt(splitData[3]));
-    } else if (splitData[0] === "add") {
+    } else if (false /*splitData[0] === "add"*/) {
       addPlayer();
-    } else if (false/* Get grid data */) {
+    } else if (e.data.operation) {
+      grid = e.data.grid
       stage = new Kinetic.Stage({
         container: "game-container",
         width: canvasWidth,
