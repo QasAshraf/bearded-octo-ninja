@@ -25,11 +25,15 @@ main {
 }
 
 #game-container {
-  padding: 1em 0;  
   text-align: center;
   border-top: 4px solid rgb(200,200,200);
   border-bottom: 4px solid rgb(200,200,200);
   background: rgb(220,220,220);
+}
+
+.kineticjs-content {
+  border-left: 4px solid rgb(200,200,200);
+  border-right: 4px solid rgb(200,200,200);
 }
 
 footer {

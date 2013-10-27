@@ -3,10 +3,14 @@
 namespace BON;
 use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
-
+use Model\MazeModel;
+use Model\PlayerModel;
 
 class Chat implements MessageComponentInterface {
+
     protected $clients;
+    protected $games;
+    protected $players;
 
     public function __construct() {
         $this->clients = new \SplObjectStorage;
@@ -20,6 +24,16 @@ class Chat implements MessageComponentInterface {
     }
 
     public function onMessage(ConnectionInterface $from, $msg) {
+        $msg = explode(" ", $msg, 2);
+        if($msg[0] == "NEW_GAME")
+        {
+            $name = $msg[1];
+            $this->games[$name]["game"] = new MazeModel($name, 20, 20);
+            $this->games[$name]["client"] = $from;
+            $from->send(json_encode(array("name" => $name, $this->games[$name]["game"]->get_grid())));
+        }
+
+
         $numRecv = count($this->clients) - 1;
         echo sprintf('Connection %d sending message "%s" to %d other connection%s' . "\n"
             , $from->resourceId, $msg, $numRecv, $numRecv == 1 ? '' : 's');
@@ -46,7 +60,31 @@ class Chat implements MessageComponentInterface {
     }
 
     public function onTextReceived($entry) {
-        $entryData = json_decode($entry, true);
+        $entryData = strtolower(json_decode($entry, true));
+
+        $message = explode(" ", $entryData['content'], 2);
+
+        switch($message[0])
+        {
+
+            case "join":
+                $args = explode(" ", $message[1]);
+                $players[$entryData['from']] = new PlayerModel($entryData['from'], $args[2]);
+                $games[$args[1]]->join($players[$entryData['from']]);
+                $players[$entryData['from']]->join($args[1]);
+                break;
+            case "move":
+                $args = explode(" ", $message[1]);
+                $return = $games[$players[$entryData['from']]->get_current_game()]->move($players[$entryData['from']], $args[0], $args[1]);
+                $games[$players[$entryData['from']]->get_current_game()]["client"]->send(json_encode($return));
+                break;
+            case "leave":
+                break;
+            case "say";
+                break;
+            default:
+                break;
+        }
 
         echo sprintf('Text received from "%s" with message "%s" ' . "\n"
             , $entryData['from'], $entryData['content']);
