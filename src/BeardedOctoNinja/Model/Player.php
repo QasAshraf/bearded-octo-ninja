@@ -1,6 +1,6 @@
 <?php
 
-namespace BON\Model;
+namespace BeardedOctoNinja\Model;
 
 class Player
 {
@@ -27,20 +27,20 @@ class Player
 
 	public function move($direction, $times = 1)
 	{
-		return $this->current_game->move(this, $direction, $times);
+		return $this->current_game->move(this, $direction, $times); // TODO: Implement
 	}
 
 	public function chat($message)
 	{
-		return $this->current_game->say(this, $message);
+		return $this->current_game->say(this, $message); // TODO: Implement
 	}
 
 	public function leave()
 	{
-		$this->current_game->leave(this);
+		$this->current_game->leave(this); // TODO: Implement
 	}
 
-	public function equals($player)
+	public function equals(Player $player)
 	{
 		if(get_class($player) == get_class($this))
 			if($player->get_phone_number() == $this->get_phone_number())

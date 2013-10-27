@@ -1,8 +1,8 @@
 <?php
 
-namespace BON\Model;
+namespace BeardedOctoNinja\Model;
 
-abstract class GameModel
+abstract class Game
 {
 	protected $name;
 	protected $players;
@@ -26,7 +26,7 @@ abstract class GameModel
 		return $this->players[$phone_number];
 	}
 
-	public function join($new_player)
+	public function join(Player $new_player)
 	{
 		if(!$this->has_player($new_player))
 			$this->players[$new_player->get_phone_number()] = $new_player;

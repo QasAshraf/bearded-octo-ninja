@@ -2,7 +2,7 @@
 
 namespace BON\Model;
 
-class MazeModel extends GameModel
+class Maze extends Game
 {
 	protected $grid;
 	protected $start;
