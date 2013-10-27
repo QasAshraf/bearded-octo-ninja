@@ -26,8 +26,14 @@ $(document).ready(function() {
   });
 
   conn = new WebSocket('ws://109.109.137.94:8080');
+  grid = conn.send( {"operation":"GAME","type":"NEW","recipient":"server","message":"newgame","sender":"steph","id":388542958} );
+  
   conn.onopen = function(e) {
     console.log("Connection established!");
+  };
+
+  conn.onclose = function(e) {
+    console.log("Connection closed!");
   };
 
   conn.onmessage = function(e) {
@@ -37,34 +43,30 @@ $(document).ready(function() {
       movePlayer(parseInt(splitData[1]), parseInt(splitData[2]), parseInt(splitData[3]));
     } else if (splitData[0] === "add") {
       addPlayer();
+    } else if (false/* Get grid data */) {
+      stage = new Kinetic.Stage({
+        container: "game-container",
+        width: canvasWidth,
+        height: canvasHeight
+      });
+      layer = new Kinetic.Layer();
+
+      mazeBlockWidth = Math.round(canvasWidth / gridWidth);
+      mazeBlockHeight = Math.round(canvasHeight / gridHeight);
+
+      buildMaze();
+
+      // Add the layer to the stage
+      stage.add(layer);
+
+      // Add test players
+      addPlayer();
+      addPlayer();
+      addPlayer();
+      addPlayer();
+      addPlayer();
     }
   };
-
-  conn.onclose = function(e) {
-    console.log("Connection closed!");
-  };
-
-  stage = new Kinetic.Stage({
-    container: "game-container",
-    width: canvasWidth,
-    height: canvasHeight
-  });
-  layer = new Kinetic.Layer();
-
-  mazeBlockWidth = Math.round(canvasWidth / gridWidth);
-  mazeBlockHeight = Math.round(canvasHeight / gridHeight);
-
-  buildMaze();
-
-  // Add the layer to the stage
-  stage.add(layer);
-
-  // Add test players
-  addPlayer();
-
-  // setTimeout(function() {
-  //   whatIsWallWhatisNot();
-  // }, 1000);
 
 });
 
@@ -155,16 +157,24 @@ function stackPlayers(i,j) {
     }
   }
 
-  var stackRows = Math.ceil(stackedPlayers.length / 2);
-  for (var i = 0; i < stackedPlayers.length; i++) {
+  var stackRows = Math.ceil(players.length / 2);
+  for (var i = 0; i < players.length; i++) {
     var row = Math.floor(i / 2);
     var column = i % 2;
     // Adjust x and y
-
+    players[i].setPosition(
+      players[i].getPosition().x + column * Math.round(mazeBlockWidth / 2),
+      players[i].getPosition().y + row * Math.round(mazeBlockHeight / 2)
+    );
 
     // Adjust width and height
-
+    if (players[i].length % 2 == 0 || row != (stackRows - 1)) {
+      players[i].setWidth(Math.round(mazeBlockWidth / 2));
+    }
+    player.setHeight(Math.round(mazeBlockHeight / stackRows));
   }
+
+  layer.draw();
 
 }
 
