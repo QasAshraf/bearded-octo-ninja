@@ -74,6 +74,14 @@ $(document).ready(function() {
       stage.add(layer);
 
     } else if (json.operation === "PLAYER" && json.type === "win") {
+
+      if (playerIndex > -1) {
+        movePlayer(playerIndex, parseInt(json.x), parseInt(json.y));
+      } else {
+        console.log("Couldn't find player " + json.player);
+      }
+      $("#console").append("<p>" + colouredName(playerIndex) + " moved to (" + json.x + "," + json.y + ")</p>");      
+
       $("#win-box").append("<h2>" + playerNames[playerIndex] + " are win!!!</h2>");
       setInterval(function() {
         $("#win-box h2").css({ color: getRandomColor() });
