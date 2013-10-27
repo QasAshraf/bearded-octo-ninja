@@ -144,7 +144,11 @@ class Maze extends Game
 
 	public function move($phone_number, $direction, $times)
 	{
-		$player = $this->players[$phone_number];
+		if(isset($this->players[$phone_number])
+			$player = $this->players[$phone_number];
+		else
+			return array();	
+		
 		$current_position = $this->get_pos($player);
 		$new_pos = $current_position;
 
