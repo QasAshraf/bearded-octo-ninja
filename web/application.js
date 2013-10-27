@@ -124,31 +124,34 @@ $(document).ready(function() {
 
   function stackPlayers(i,j) {
     var stackedPlayers = [];
-    for (var i = 0; i < players.length; i++) {
-      if (playerPositions[i][0] === i && playerPositions[i][1] === j) {
-        stackedPlayers.push(players[i]);
+    for (var k = 0; k < players.length; k++) {
+      if (playerPositions[k][0] === i && playerPositions[k][1] === j) {
+        stackedPlayers.push(players[k]);
       }
+      console.log(playerPositions[k][0],playerPositions[k][1]);
     }
 
+    console.log(stackedPlayers.length);
+
     var stackRows = Math.ceil(stackedPlayers.length / 2);
-    for (var i = 0; i < stackedPlayers.length; i++) {
-      var row = Math.floor(i / 2);
-      var column = i % 2;
+    for (var k = 0; k < stackedPlayers.length; k++) {
+      var row = Math.floor(k / 2);
+      var column = k % 2;
 
       // Adjust x and y
-      stackedPlayers[i].setPosition(
+      stackedPlayers[k].setPosition(
         i * mazeBlockWidth + column * Math.round(mazeBlockWidth / 2),
         j * mazeBlockHeight + row * Math.round(mazeBlockHeight / stackRows)
       );
 
       // Adjust width and height
       if (stackedPlayers.length % 2 === 0 || row != (stackRows - 1)) {
-        stackedPlayers[i].setWidth(Math.round(mazeBlockWidth / 2));
+        stackedPlayers[k].setWidth(Math.round(mazeBlockWidth / 2));
       } else {
-        stackedPlayers[i].setWidth(mazeBlockWidth);
+        stackedPlayers[k].setWidth(mazeBlockWidth);
       }
 
-      stackedPlayers[i].setHeight(Math.ceil(mazeBlockHeight / stackRows));
+      stackedPlayers[k].setHeight(Math.ceil(mazeBlockHeight / stackRows));
     }
 
     layer.draw();
@@ -156,6 +159,14 @@ $(document).ready(function() {
   }
 
   function movePlayer(playerIndex, i, j) {
+    players[playerIndex].setWidth(mazeBlockWidth);
+    players[playerIndex].setHeight(mazeBlockHeight);
+
+    var oldX = playerPositions[playerIndex][0];
+    var oldY = playerPositions[playerIndex][1];
+
+    playerPositions[playerIndex] = [i,j];
+    stackPlayers(oldX,oldY);
 
     var tween = new Kinetic.Tween({
       node: players[playerIndex], 
@@ -164,8 +175,7 @@ $(document).ready(function() {
       y: j * mazeBlockHeight,
       opacity: 1,
       onFinish: function() {
-        playerPositions[i] = [i,j];
-        stackPlayers(i,j);
+        stackPlayers(playerPositions[playerIndex][0],playerPositions[playerIndex][1]);
       }
     });
 
