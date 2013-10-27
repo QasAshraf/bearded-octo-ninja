@@ -145,69 +145,90 @@ class Maze extends Game
 	public function move($phone_number, $direction, $times)
 	{
 		$player = $this->players[$phone_number];
+		$current_position = $this->get_pos($player);
+		$new_pos = $current_position;
 
 		switch($direction)
 		{
 			case "up":
-				$direction = 1;
+				for($i = $current_position[1]; $i >= $times; $i--)
+				{
+					if($this->grid[$new_pos[0]][$i] == "#")
+					{
+						break;
+					}
+					else if($this->grid[$new_pos[0]][$i] == "e")
+					{
+						return array("operation" => "PLAYER",
+									 "type" => "win",
+									 "name" => $player->get_user_name()
+									);
+					}
+					else
+					{
+						$new_pos = array($new_pos[0], $i);
+					}
+				}
 				break;
 			case "right":
-				$direction = 2;
-				break;
+				for($i = $current_position[0]; $i <= $times; $i++)
+				{
+					if($this->grid[$i][$new_pos[1]] == "#")
+					{
+						break;
+					}
+					else if($this->grid[$i][$new_pos[1]] == "e")
+					{
+						return array("operation" => "PLAYER",
+									 "type" => "win",
+									 "name" => $player->get_user_name()
+									);
+					}
+					else
+					{
+						$new_pos = array($i, $new_pos[1]);
+					}
+				}
 			case "down":
-				$direction = 3;
-				break;
+				for($i = $current_position[1]; $i <= $times; $i++)
+				{
+					if($this->grid[$new_pos[0]][$i] == "#")
+					{
+						break;
+					}
+					else if($this->grid[$new_pos[0]][$i] == "e")
+					{
+						return array("operation" => "PLAYER",
+									 "type" => "win",
+									 "name" => $player->get_user_name()
+									);
+					}
+					else
+					{
+						$new_pos = array($new_pos[0], $i);
+					}
+				}
 			case "left":
-				$direction = 4;
-				break;
+				for($i = $current_position[0]; $i >= $times; $i--)
+				{
+					if($this->grid[$i][$new_pos[1]] == "#")
+					{
+						break;
+					}
+					else if($this->grid[$i][$new_pos[1]] == "e")
+					{
+						return array("operation" => "PLAYER",
+									 "type" => "win",
+									 "name" => $player->get_user_name()
+									);
+					}
+					else
+					{
+						$new_pos = array($i, $new_pos[1]);
+					}
+				}
 			default:
 				return array();
-		}
-
-		$current_position = $this->get_pos($player);
-		$new_pos = $current_position;
-
-		if($direction %2 == 1)
-		{
-			for($i = $current_position[1]; $i <= $times; $i += $direction-2)
-			{
-				if($this->grid[$new_pos[0]][$i] == "#")
-				{
-					break;
-				}
-				else if($this->grid[$new_pos[0]][$i] == "e")
-				{
-					return array("operation" => "PLAYER",
-								 "type" => "win",
-								 "name" => $player->get_user_name()
-								);
-				}
-				else
-				{
-					$new_pos = array($new_pos[0], $i);
-				}
-			}
-		}
-		else
-		{
-			for($i = $current_position[0]; $i <= $times; $i += $direction-3)
-			{
-				if($this->grid[$i][$new_pos[1]] == "#")
-				{
-					break;
-				}
-				else if($this->grid[$i][$new_pos[1]] == "e")
-				{
-					return array("operation" => "PLAYER",
-								 "type" => "win",
-								 "name" => $player->get_user_name()
-								);
-				}
-				else
-				{
-					$new_pos = array($i, $new_pos[1]);
-				}
-			}
 		}
 
 		return array("operation" => "PLAYER",
