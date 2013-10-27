@@ -36,8 +36,18 @@ $(document).ready(function() {
   conn.onmessage = function(e) {
     var json = JSON.parse(e.data);
     if (json.operation === "PLAYER" && json.type === "move") {
-      movePlayer(0, parseInt(json.x), parseInt(json.y));
-    } else if (json.operation === "PLAYER" && json.type === "new") {
+      var playerIndex = -1;
+      for (var k = 0; k < playerNames.length; k++) {
+        if (playerNames[k] === json.name) {
+          playerIndex = k;
+        }
+      }
+      if (playerIndex > -1) {
+        movePlayer(0, parseInt(json.x), parseInt(json.y));
+      } else {
+        console.log("Couldn't find player " + json.name);
+      }
+    } else if (json.operation === "PLAYER" && json.type === "join") {
       playerNames.push(json.name);
       addPlayer();
     } else if (json.operation === "GAME" && json.type === "new") {
@@ -57,7 +67,10 @@ $(document).ready(function() {
       setInterval(function() {
         $("#win-box h2").css({ color: getRandomColor() });
       }, 100);
-      $("#win-box").css({ display: "fixed" });
+      $("#win-box").css({ 
+        position: "fixed",
+        display: "block"
+      });
     }
   };
 
