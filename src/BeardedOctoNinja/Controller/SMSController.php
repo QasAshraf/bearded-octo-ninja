@@ -20,7 +20,7 @@ class SMSController {
                 return array(
                   'operation' => 'PLAYER',
                   'type' => 'move',
-                  'name' => $request['from'],
+                  'name' => 'bob',
                   'x' => 2,
                   'y' => 0
                 ); // TODO: Process either player movement or...process joining/leaving game
