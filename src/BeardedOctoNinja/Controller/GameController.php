@@ -9,15 +9,18 @@ use BeardedOctoNinja\Model\Maze;
  */
 
 class GameController {
+
     private $maze = null;
     private $size = 21;
     private $name = null;
+
     public function startGame() {
         $this->maze = new Maze($this->name, $this->size, $this->size);
     }
 
     public function processMessage($msg) {
-        switch ($msg['type']) {
+        switch ($msg['type']) 
+        {
             case 'create':
                 $this->name = $msg['message'];
                 $this->size = $msg['size'];
@@ -34,5 +37,21 @@ class GameController {
                 break;
         }
         return 'noendpoint';
+    }
+
+    public function new_player($phone_number, $name)
+    {
+        $player = new Player($phone_number, $name);
+        return $this->maze->join($player);
+    }
+
+    public function move_player($phone_number, $direction, $times)
+    {
+        return $this->maze->move($phone_number, $direction, $times);
+    }
+
+    public function leave_player($phone_number)
+    {
+        return $this->maze->leave($phone_number);
     }
 }

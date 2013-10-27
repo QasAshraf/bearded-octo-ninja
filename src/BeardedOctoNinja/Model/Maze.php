@@ -129,11 +129,20 @@ class Maze extends Game
 	public function join(Player $player)
 	{
 		parent::join($player);
-		$this->player[$player->get_phone_number()]->set_position($this->start);
+		$this->players[$player->get_phone_number()]->set_position($this->start);
+		return array("operation" => "PLAYER",
+								 "type" => "join",
+								 "name" => $player->get_user_name(),
+								 "player" => $player->get_phone_number(),
+								 "x" => $this->start[0],
+								 "y" => $this->start[1]
+								);
 	}
 
-	public function move(Player $player, $direction, $times)
+	public function move($phone_number, $direction, $times)
 	{
+		$player = $this->players[$phone_number];
+
 		switch($direction)
 		{
 			case "up":
@@ -175,7 +184,10 @@ class Maze extends Game
 					break;
 				else if($this->grid[$current_position[0]][$i] == "e")
 				{
-					return array("Win" => $player->get_user_name());
+					return array("operation" => "PLAYER",
+								 "type" => "win",
+								 "name" => $player->get_user_name()
+								);
 				}
 				else
 					$new_pos = array($current_position[0], $i);
@@ -187,13 +199,18 @@ class Maze extends Game
 					break;
 				else if($this->grid[$i][$current_position[1]] == "e")
 				{
-					return array("Win" => $player->get_user_name());
+					return array("operation" => "PLAYER",
+								 "type" => "win",
+								 "name" => $player->get_user_name()
+								);
 				}
 				else
 					$new_pos = array($i, $current_position[1]);
 			}
 
-		return array("player" => $player->get_phone_number(),
+		return array("operation" => "PLAYER",
+				     "type", => "move",
+					 "player" => $player->get_phone_number(),
 					 "x" => $new_pos[0],
 					 "y" => $new_pos[1]
 					);
@@ -204,9 +221,13 @@ class Maze extends Game
         // TODO: Implement.
 	}
 
-	public function leave($player)
+	public function leave($phone_number)
 	{
-        // TODO: Something.
+        unset($this->players[$phone_number]);
+        return array("operation" => "PLAYER",
+					 "type" => "leave",
+					 "name" => $player->get_user_name()
+					);
 	}
 
 	public function get_start()
