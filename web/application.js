@@ -29,7 +29,7 @@ $(document).ready(function() {
   
   conn.onopen = function(e) {
     console.log("Connection established!");
-    conn.send( {"operation":"GAME","type":"NEW","recipient":"server","message":"newgame","sender":"steph","id":388542958} );
+    conn.send( {"operation":"GAME","type":"new","recipient":"server","message":"newgame","sender":"steph","id":388542958} );
   };
 
   conn.onclose = function(e) {
@@ -42,8 +42,8 @@ $(document).ready(function() {
       movePlayer(parseInt(splitData[1]), parseInt(splitData[2]), parseInt(splitData[3]));
     } else if (false /*splitData[0] === "add"*/) {
       addPlayer();
-    } else if (e.data.operation) {
-      grid = e.data.grid
+    } else if (e.data.operation === "GAME" && e.data.type === "new") {
+      grid = e.data.grid;
       stage = new Kinetic.Stage({
         container: "game-container",
         width: canvasWidth,
