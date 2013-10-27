@@ -18,7 +18,7 @@ class GameController {
 
     public function processMessage($msg) {
         switch ($msg['type']) {
-            case 'create':
+            case 'create': // Client requested a new game -- let's set one up and send them the details back :)
                 $this->name = $msg['message'];
                 $this->size = $msg['size'];
                 $this->startGame();
@@ -32,7 +32,17 @@ class GameController {
                 );
                 return $response;
                 break;
+            case 'end':
+                return array(
+                    'operation' => 'GAME',
+                    'type' => 'end',
+                    'name' => 'GAME_NAME', // Name of the game you wanna stops
+                    'reason' => 'REASON' // Reason for stopping it, best be a good one!
+                );
+                break;
+            default:
+                return NULL;
+                break;
         }
-        return 'noendpoint';
     }
 }
