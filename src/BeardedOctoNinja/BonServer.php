@@ -23,6 +23,8 @@ class BonServer implements MessageComponentInterface {
     public function onMessage(ConnectionInterface $from, $msg) {
         $numRecv = count($this->clients) - 1;
 
+        echo $msg;
+
 
         // TODO: Parse message, if type = SMS then we can do something useful.
         $request = json_decode($msg, 1);
@@ -31,6 +33,7 @@ class BonServer implements MessageComponentInterface {
             case 'SMS':
                 break;
             case 'GAME':
+                echo 'GAME';
                 $response = $this->game->processMessage($request);
                 break;
         }
