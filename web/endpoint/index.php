@@ -28,9 +28,31 @@ class SMSInterceptor {
         }
     }
 
+    private function validateMessageContent($content)
+    {
+        // Validate that date, only accept certain commands
+        $message = explode(' ', $content);
+
+        // Check only command + argument
+        if(count($message) < 0 && count($message) > 4)
+            return false;
+
+        $command = $message[0];
+
+        // Check it's a valid command
+        $possibleCommands = array('join', 'move', 'leave');
+        if(!in_array($command, $possibleCommands))
+            return false;
+
+        return true;
+    }
+
     // Get the data we need, then send it via JSON to the web sockets server.
     private function post($data)
     {
+        if(!$this->validateMessageContent($data['content']))
+            return $this->response('Message content not valid for our server, but thanks anyway.');
+
         // Only interested in two fields: content, from.
         $clockwork_request = array(
             'operation' => 'SMS',
@@ -47,7 +69,7 @@ class SMSInterceptor {
         $client->sendMessage($msg); // Fire off message to socket server.
         $client->close();
 
-        echo $this->response('Message passed onto the socket server');
+        return  $this->response('Message passed onto the socket server');
     }
 
     // Clean up data BEFORE we use it
