@@ -35,6 +35,7 @@ $(document).ready(function() {
 
   conn.onmessage = function(e) {
     var json = JSON.parse(e.data);
+    console.log(json);
     if (json.operation === "PLAYER" && json.type === "move") {
       var playerIndex = -1;
       for (var k = 0; k < playerNames.length; k++) {
