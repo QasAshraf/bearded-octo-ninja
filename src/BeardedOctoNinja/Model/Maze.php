@@ -1,6 +1,6 @@
 <?php
 
-namespace BON\Model;
+namespace BeardedOctoNinja\Model;
 
 class Maze extends Game
 {
@@ -16,7 +16,7 @@ class Maze extends Game
 
 		// Initilize some vars [x]
 		$wall_list = array();
-		$grid;
+		$grid = array();
 
 		// Generate a 2d array of # with given sizes [x]
 		for($i = 0; $i < $x_size; $i++)
@@ -121,18 +121,18 @@ class Maze extends Game
 		$this->grid = $grid;
 	}
 
-	protected function get_pos($player)
+	protected function get_pos(Player $player)
 	{
 		return $this->player_positions[$player->get_phone_number()];
 	}
 
-	public function join($player)
+	public function join(Player $player)
 	{
-		$parent->join($player);
+		parent::join($player);
 		$this->player_positions[$this->player->get_phone_number()] = $this->start;
 	}
 
-	public function move($player, $direction, $times)
+	public function move(Player $player, $direction, $times)
 	{
 		switch($direction)
 		{
@@ -164,7 +164,7 @@ class Maze extends Game
 				return array();
 		}
 
-		$current_postition = get_pos($player);
+		$current_position = $this->get_pos($player);
 		$new_pos = $current_position;
 
 		$moved = 0;
@@ -201,27 +201,27 @@ class Maze extends Game
 
 	public function say($player, $message)
 	{
-
+        // TODO: Implement.
 	}
 
 	public function leave($player)
 	{
-
+        // TODO: Something.
 	}
 
 	public function get_start()
 	{
-		return $this->start;
+		return $this->start; // TODO: Implement
 	}
 
 	public function get_end()
 	{
-		return $this->end;
+		return $this->end; // TODO: Implement
 	}
 
 	public function get_grid()
 	{
-		return $this->grid;
+		return $this->grid; // TODO: Implement
 	}
 
 	public function print_grid()

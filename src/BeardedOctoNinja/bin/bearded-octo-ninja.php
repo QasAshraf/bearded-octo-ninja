@@ -4,7 +4,7 @@ use Ratchet\Http\HttpServer;
 use Ratchet\WebSocket\WsServer;
 use BeardedOctoNinja\BonServer;
 
-require dirname(__DIR__) . '/../vendor/autoload.php';
+require dirname(__DIR__) . '/../../vendor/autoload.php';
 
 /**
  *  Spawns off a beardedOctoNinjaServer which sits on port 8080 waiting for events to happen. It then uses it's crazy

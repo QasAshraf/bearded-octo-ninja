@@ -12,7 +12,7 @@ abstract class Game
 		$this->name = $name;
 	}
 
-	protected function has_player($player)
+	protected function has_player(Player $player)
 	{
 		foreach($this->players as $current_player)
 			if($current_player->equals($player))
