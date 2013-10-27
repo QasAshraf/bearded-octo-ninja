@@ -1,6 +1,7 @@
 <?php
 namespace BeardedOctoNinja\Controller;
 use BeardedOctoNinja\Model\Maze;
+use BeardedOctoNinja\Model\Player;
 /**
  * Created by PhpStorm.
  * User: steph
@@ -9,14 +10,18 @@ use BeardedOctoNinja\Model\Maze;
  */
 
 class GameController {
+
     private $maze = null;
     private $size = 21;
     private $name = null;
+
     public function startGame() {
         $this->maze = new Maze($this->name, $this->size, $this->size);
     }
 
-    public function processMessage($msg) {
+    public function processMessage($msg) 
+    {
+
         switch ($msg['type']) {
             case 'create': // Client requested a new game -- let's set one up and send them the details back :)
                 $this->name = $msg['message'];
@@ -43,6 +48,43 @@ class GameController {
             default:
                 return NULL;
                 break;
+        }
+    }
+
+    public function new_player($phone_number, $name)
+    {
+        try
+        {
+            $player = new Player($phone_number, $name);
+            return $this->maze->join($player);
+        }
+        catch(Exception $e)
+        {
+            return array();
+        }
+    }
+
+    public function move_player($phone_number, $direction, $times)
+    {
+        try
+        {
+            return $this->maze->move($phone_number, $direction, $times);
+        }
+        catch(Exception $e)
+        {
+            return array();
+        }
+    }
+
+    public function leave_player($phone_number)
+    {
+        try
+        {
+            return $this->maze->leave($phone_number);
+        }
+        catch(Exception $e)
+        {
+            return array();
         }
     }
 }

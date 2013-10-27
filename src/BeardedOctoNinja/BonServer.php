@@ -47,10 +47,48 @@ class BonServer implements MessageComponentInterface
     private function getGameController()
     {
         if(is_null($this->game))
-        {
-            return new GameController();
-        }
+            $this->game = new GameController();
         return $this->game;
+    }
+
+    protected function handleSMS($request)
+    {
+        switch(strtolower($request['type']))
+        {
+            case 'outgoing':
+                return array(
+                    'operation' => 'SMS',
+                    'type' => 'outgoing',
+                    'recipient' => $request['to'],
+                    'message' => $request['content'],
+                    'sender' => $request['from']
+                ); // TODO: Maybe change this format, depending on what's easier for SMS Interceptor
+                break;
+            case 'incoming':
+
+                $command = explode(" ", $request['message'], 2);
+                switch($command[0])
+                {
+                    case "join":
+                        return $this->getGameController()->new_player($request['from'], $command[1]);
+                        break;
+                    case "move":
+                        $args = explode(" ", $command[1], 2);
+                        return $this->getGameController()->move_player($request['from'], $args[0], $args[1]);
+                        break;
+                    case "leave":
+                        return $this->getGameController()->leave_player($request['from']);
+                        break;
+                    default:
+                        return NULL;
+                        break;
+                }
+                break;
+            default:
+                return NULL;
+                break;
+        }
+       
     }
 
     public function onMessage(ConnectionInterface $from, $msg)
@@ -59,8 +97,7 @@ class BonServer implements MessageComponentInterface
         $response = null;
         switch (strtolower($request['operation'])) {
             case 'sms':
-                $this->sms = $this->getSMSController();
-                $response = $this->sms->handleRequest($request);
+                $response = $this->handleSMS($request);
                 break;
             case 'player':
                 $this->player = $this->getPlayerController();
