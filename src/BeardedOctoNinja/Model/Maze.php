@@ -171,7 +171,6 @@ class Maze extends Game
 					{
 						return array("operation" => "PLAYER",
 									 "type" => "win",
-									 "player" => $player->get_phone_number(),
 									 "name" => $player->get_user_name()
 									);
 					}
@@ -192,7 +191,6 @@ class Maze extends Game
 					{
 						return array("operation" => "PLAYER",
 									 "type" => "win",
-									 "player" => $player->get_phone_number(),
 									 "name" => $player->get_user_name()
 									);
 					}
@@ -213,7 +211,6 @@ class Maze extends Game
 					{
 						return array("operation" => "PLAYER",
 									 "type" => "win",
-									 "player" => $player->get_phone_number(),
 									 "name" => $player->get_user_name()
 									);
 					}
@@ -234,7 +231,6 @@ class Maze extends Game
 					{
 						return array("operation" => "PLAYER",
 									 "type" => "win",
-									 "player" => $player->get_phone_number(),
 									 "name" => $player->get_user_name()
 									);
 					}
