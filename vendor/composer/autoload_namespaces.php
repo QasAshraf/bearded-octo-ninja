@@ -26,5 +26,5 @@ return array(
     'Guzzle\\Http' => array($vendorDir . '/guzzle/http'),
     'Guzzle\\Common' => array($vendorDir . '/guzzle/common'),
     'Evenement' => array($vendorDir . '/evenement/evenement/src'),
-    'BON' => array($baseDir . '/src'),
+    'BeardedOctoNinja' => array($baseDir . '/src'),
 );
