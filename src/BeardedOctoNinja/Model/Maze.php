@@ -8,11 +8,17 @@ class Maze extends Game
 	protected $start;
 	protected $end;
 
+	protected $x_size;
+	protected $y_size;
+
 	protected $players;
 
 	public function __construct($game_name, $x_size, $y_size)
 	{
 		parent::__construct($game_name);
+
+		$this->y_size = $y_size;
+		$this->x_size = $x_size;
 
 		// Initilize some vars [x]
 		$wall_list = array();
