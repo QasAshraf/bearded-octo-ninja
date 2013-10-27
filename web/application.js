@@ -11,6 +11,9 @@ velocity = [2,2];
 startX = 0;
 startY = 0;
 
+endX = 0;
+endY = 0;
+
 $(document).ready(function() {
 
   stage = new Kinetic.Stage({
@@ -80,8 +83,12 @@ $(document).ready(function() {
       } else {
         console.log("Couldn't find player " + json.player);
       }
-      $("#console").append("<p>" + colouredName(playerIndex) + " moved to (" + json.x + "," + json.y + ")</p>");      
+    }
+  };
 
+});
+
+  function win(playerIndex) {
       $("#win-box").append("<h2>" + playerNames[playerIndex] + " are win!!!</h2>");
       setInterval(function() {
         $("#win-box h2").css({ color: getRandomColor() });
@@ -90,10 +97,7 @@ $(document).ready(function() {
         position: "fixed",
         display: "block"
       });
-    }
-  };
-
-});
+  }
 
   function buildMaze() {
     for (var i = 0; i < grid.length; i++) {
@@ -113,6 +117,9 @@ $(document).ready(function() {
       startX = i;
       startY = j;
       return;
+    } else if (grid[i][j] === "e") {
+      endX = i;
+      endY = j;
     }
 
     var block = new Kinetic.Rect({
@@ -198,14 +205,20 @@ $(document).ready(function() {
     playerPositions[pIndex] = [i,j];
     stackPlayers(oldX,oldY);
 
+    var posX = i;
+    var posY = j;
+
     var tween = new Kinetic.Tween({
       node: players[pIndex], 
       duration: 1,
-      x: i * mazeBlockWidth,
-      y: j * mazeBlockHeight,
+      x: posX,
+      y: posY,
       opacity: 1,
       onFinish: function() {
         stackPlayers(playerPositions[pIndex][0],playerPositions[pIndex][1]);
+        if (posX === endX && posY === endY) {
+          win(pIndex);
+        }
       }
     });
 
