@@ -6,21 +6,13 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Whoops' => array($vendorDir . '/filp/whoops/src'),
-    'Twig_' => array($vendorDir . '/twig/twig/lib'),
     'Symfony\\Component\\Routing\\' => array($vendorDir . '/symfony/routing'),
-    'Symfony\\Component\\HttpKernel\\' => array($vendorDir . '/symfony/http-kernel'),
     'Symfony\\Component\\HttpFoundation\\' => array($vendorDir . '/symfony/http-foundation'),
     'Symfony\\Component\\EventDispatcher\\' => array($vendorDir . '/symfony/event-dispatcher'),
-    'Symfony\\Component\\Debug\\' => array($vendorDir . '/symfony/debug'),
-    'Symfony\\Bridge\\Twig\\' => array($vendorDir . '/symfony/twig-bridge'),
-    'Silex' => array($vendorDir . '/silex/silex/src'),
     'React\\Stream' => array($vendorDir . '/react/stream'),
     'React\\Socket' => array($vendorDir . '/react/socket'),
     'React\\EventLoop' => array($vendorDir . '/react/event-loop'),
     'Ratchet' => array($vendorDir . '/cboden/ratchet/src'),
-    'Psr\\Log\\' => array($vendorDir . '/psr/log'),
-    'Pimple' => array($vendorDir . '/pimple/pimple/lib'),
     'Guzzle\\Stream' => array($vendorDir . '/guzzle/stream'),
     'Guzzle\\Parser' => array($vendorDir . '/guzzle/parser'),
     'Guzzle\\Http' => array($vendorDir . '/guzzle/http'),

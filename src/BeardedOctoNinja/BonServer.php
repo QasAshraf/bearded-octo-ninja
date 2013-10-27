@@ -3,12 +3,14 @@ namespace BeardedOctoNinja;
 
 use Ratchet\MessageComponentInterface;
 use Ratchet\ConnectionInterface;
+use BeardedOctoNinja\Controller\GameController;
 
 class BonServer implements MessageComponentInterface {
     protected $clients;
 
     public function __construct() {
         $this->clients = new \SplObjectStorage;
+        $this->game = new GameController();
     }
 
     public function onOpen(ConnectionInterface $conn) {
@@ -20,15 +22,35 @@ class BonServer implements MessageComponentInterface {
 
     public function onMessage(ConnectionInterface $from, $msg) {
         $numRecv = count($this->clients) - 1;
-        echo sprintf('Connection %d sending message "%s" to %d other connection%s' . "\n"
-            , $from->resourceId, $msg, $numRecv, $numRecv == 1 ? '' : 's');
+
 
         // TODO: Parse message, if type = SMS then we can do something useful.
+        $request = json_decode($msg);
+        $response = null;
+        switch($request->operation) {
+            case 'SMS':
+                break;
+            case 'GAME':
+                $data = $this->game->processMessage($request);
+                $response = array(
+                    'operation' => 'GAME',
+                    'type' => 'NEW',
+                    'recipient' => 'ALL',
+                    'message' => $data,
+                    'sender' => 'server',
+                    'id' => uniqid()
+                );
+                break;
+        }
 
-        foreach ($this->clients as $client) {
-            if ($from !== $client) {
-                // The sender is not the receiver, send to each client connected
-                $client->send($msg);
+        if($response !== null){
+            echo sprintf('Connection %d sending message "%s" to %d other connection%s' . "\n"
+                , $from->resourceId, json_encode($response), $numRecv, $numRecv == 1 ? '' : 's');
+            foreach ($this->clients as $client) {
+                if ($from !== $client) {
+                    // The sender is not the receiver, send to each client connected
+                    $client->send(json_encode($response));
+                }
             }
         }
     }
