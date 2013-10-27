@@ -50,7 +50,7 @@ class SMSInterceptor {
     // Get the data we need, then send it via JSON to the web sockets server.
     private function post($data)
     {
-        if(!$this->validateMessageContent($data['content']))
+        if(!$this->validateMessageContent(strtolower($data['content'])))
             return $this->response('Message content not valid for our server, but thanks anyway.');
 
         // Only interested in two fields: content, from.
